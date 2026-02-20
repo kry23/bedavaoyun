@@ -102,13 +102,13 @@ async function handleSupabase(request: NextRequest, pathname: string) {
 
 export const config = {
   matcher: [
-    "/",
-    "/oyunlar/:path*",
-    "/siralama/:path*",
-    "/giris",
-    "/kayit",
-    "/profil/:path*",
-    "/blog/:path*",
-    "/en/:path*",
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization)
+     * - favicon.ico, icons, og images, manifest, etc.
+     * - api routes
+     */
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp3|wav)$|manifest\\.json|api/).*)",
   ],
 };
