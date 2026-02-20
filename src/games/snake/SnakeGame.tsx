@@ -164,6 +164,8 @@ export default function SnakeGame() {
         won={false}
         score={score}
         scoreLabel="Puan"
+        gameName="Yılan"
+        gameSlug="snake"
         onClose={() => setShowModal(false)}
         onRestart={initGame}
       />

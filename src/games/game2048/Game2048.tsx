@@ -137,6 +137,8 @@ export default function Game2048() {
         won={stateRef.current.won2048}
         score={score}
         scoreLabel="Puan"
+        gameName="2048"
+        gameSlug="game2048"
         onClose={() => setShowModal(false)}
         onRestart={initGame}
       />

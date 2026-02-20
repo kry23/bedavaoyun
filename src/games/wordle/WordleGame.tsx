@@ -190,6 +190,8 @@ export default function WordleGame() {
         won={state.status === "won"}
         score={state.guesses.length}
         scoreLabel="Tahmin"
+        gameName="Kelime Tahmin"
+        gameSlug="wordle"
         onClose={() => setShowModal(false)}
         onRestart={initGame}
       />

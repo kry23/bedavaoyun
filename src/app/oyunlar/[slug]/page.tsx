@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { gameRegistry, gameSlugs } from "@/lib/game-registry";
 import { GameJsonLd } from "@/components/game/JsonLd";
+import { RelatedGames } from "@/components/game/RelatedGames";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 interface Props {
@@ -72,6 +73,7 @@ export default function GamePage({ params }: Props) {
     <div className="mx-auto max-w-5xl px-4 py-8">
       <GameJsonLd game={game} slug={params.slug} />
       <GameComponent />
+      <RelatedGames currentSlug={params.slug} />
     </div>
   );
 }

@@ -116,6 +116,8 @@ export default function MemoryGame() {
         won={true}
         score={state.moves}
         scoreLabel="Hamle"
+        gameName="Hafıza Oyunu"
+        gameSlug="memory"
         onClose={() => setShowModal(false)}
         onRestart={() => initGame()}
       />

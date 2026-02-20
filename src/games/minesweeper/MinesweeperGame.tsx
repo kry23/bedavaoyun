@@ -244,6 +244,8 @@ export default function MinesweeperGame() {
         won={gameStatus === "won"}
         score={Math.floor(elapsed / 1000)}
         scoreLabel="Süre (sn)"
+        gameName="Mayın Tarlası"
+        gameSlug="minesweeper"
         onClose={() => setShowModal(false)}
         onRestart={() => initGame(difficulty)}
       />

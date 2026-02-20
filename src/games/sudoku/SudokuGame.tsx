@@ -194,6 +194,8 @@ export default function SudokuGame() {
         won={state.status === "won"}
         score={timer.elapsed}
         scoreLabel="Süre"
+        gameName="Sudoku"
+        gameSlug="sudoku"
         onClose={() => setShowModal(false)}
         onRestart={() => initGame()}
       />
