@@ -1,21 +1,50 @@
 {
-  "name": "Bedava Oyun",
+  "name": "Bedava Oyun - Ücretsiz Online Oyunlar",
   "short_name": "Bedava Oyun",
-  "description": "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar",
+  "description": "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar. Mayın Tarlası, 2048, Yılan, Tetris, Sudoku ve daha fazlası!",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0F172A",
   "theme_color": "#6366F1",
+  "lang": "tr",
+  "categories": ["games", "entertainment"],
   "icons": [
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tetris Oyna",
+      "url": "/oyunlar/tetris",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Sudoku Oyna",
+      "url": "/oyunlar/sudoku",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "2048 Oyna",
+      "url": "/oyunlar/game2048",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

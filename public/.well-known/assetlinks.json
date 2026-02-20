@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.bedavaoyun.app",
+      "sha256_cert_fingerprints": [
+        "E5:80:36:A2:E5:AB:1A:05:96:83:AE:5B:AE:24:09:E7:60:FE:EB:CC:F6:2B:17:64:A3:98:7E:10:54:F8:B6:64"
+      ]
+    }
+  }
+]

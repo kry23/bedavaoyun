@@ -1,0 +1,55 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.bedavaoyun.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.bedavaoyun.app"
+        minSdk 23
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+
+        // TWA host URL
+        manifestPlaceholders = [
+            hostName: "bedava-oyun.com",
+            defaultUrl: "https://bedava-oyun.com",
+            launcherName: "Bedava Oyun",
+            assetStatements: '[{ "relation": ["delegate_permission/common.handle_all_urls"], "target": { "namespace": "android_app", "package_name": "com.bedavaoyun.app", "sha256_cert_fingerprints": ["E5:80:36:A2:E5:AB:1A:05:96:83:AE:5B:AE:24:09:E7:60:FE:EB:CC:F6:2B:17:64:A3:98:7E:10:54:F8:B6:64"] } }]'
+        ]
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../keystore.jks")
+            storePassword "bedavaoyun123"
+            keyAlias "bedavaoyun"
+            keyPassword "bedavaoyun123"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.browser:browser:1.8.0'
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}
