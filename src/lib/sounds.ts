@@ -4,7 +4,7 @@ let loaded = false;
 export function preloadSounds() {
   if (loaded || typeof window === "undefined") return;
   ["click", "win", "lose", "flag"].forEach((name) => {
-    const audio = new Audio(`/sounds/${name}.mp3`);
+    const audio = new Audio(`/sounds/${name}.wav`);
     audio.preload = "auto";
     audio.volume = 0.3;
     sounds[name] = audio;

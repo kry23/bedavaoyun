@@ -23,7 +23,18 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "tr_TR",
     type: "website",
+    images: [{ url: "/og/default.png", width: 1200, height: 630 }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/og/default.png"],
+  },
+  keywords: [
+    "bedava oyun", "ücretsiz oyun", "tarayıcı oyunları", "online oyun",
+    "mayın tarlası", "2048", "yılan oyunu", "wordle türkçe", "kelime tahmin",
+  ],
 };
 
 export default function RootLayout({
