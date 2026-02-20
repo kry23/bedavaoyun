@@ -37,6 +37,24 @@ export const gameRegistry: Record<string, GameInfo> = {
     sortDirection: "asc",
     scoreLabel: "Tahmin",
   },
+  sudoku: {
+    name: "Sudoku",
+    slug: "sudoku",
+    description: "9x9 ızgarayı 1-9 sayılarıyla doldur!",
+    icon: "🧩",
+    color: "#8B5CF6",
+    sortDirection: "asc",
+    scoreLabel: "Süre",
+  },
+  memory: {
+    name: "Hafıza Oyunu",
+    slug: "memory",
+    description: "Kartları eşleştir, hafızanı test et!",
+    icon: "🧠",
+    color: "#EC4899",
+    sortDirection: "asc",
+    scoreLabel: "Hamle",
+  },
 };
 
 export const gameList = Object.values(gameRegistry);

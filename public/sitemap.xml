@@ -31,6 +31,41 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://bedava-oyun.com/oyunlar/sudoku</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/oyunlar/memory</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/blog/mayIn-tarlasi-nasil-oynanir</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/blog/2048-kazanma-taktikleri</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/blog/wordle-turkce-kelime-tahmin-ipuclari</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/blog/tarayici-oyunlari-tarihi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://bedava-oyun.com/siralama</loc>
     <changefreq>hourly</changefreq>
     <priority>0.7</priority>
@@ -52,6 +87,16 @@
   </url>
   <url>
     <loc>https://bedava-oyun.com/siralama/wordle</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/siralama/sudoku</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://bedava-oyun.com/siralama/memory</loc>
     <changefreq>hourly</changefreq>
     <priority>0.6</priority>
   </url>

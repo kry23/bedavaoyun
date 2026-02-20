@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export function useGameTimer() {
+export function useGameTimer(autoRun?: boolean) {
   const [elapsed, setElapsed] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTimeRef = useRef<number>(0);
@@ -35,5 +35,17 @@ export function useGameTimer() {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   }, []);
 
-  return { elapsed, start, stop, reset, formatTime };
+  // Auto start/stop based on boolean parameter
+  useEffect(() => {
+    if (autoRun === undefined) return;
+    if (autoRun) {
+      start();
+    } else {
+      stop();
+    }
+  }, [autoRun, start, stop]);
+
+  const formatted = formatTime(elapsed);
+
+  return { elapsed, start, stop, reset, formatTime, formatted };
 }

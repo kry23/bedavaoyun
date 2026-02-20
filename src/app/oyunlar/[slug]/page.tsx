@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { gameRegistry, gameSlugs } from "@/lib/game-registry";
+import { GameJsonLd } from "@/components/game/JsonLd";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 interface Props {
@@ -30,6 +31,14 @@ const gameComponents: Record<string, ReturnType<typeof dynamic>> = {
   ),
   wordle: dynamic(
     () => import("@/games/wordle/WordleGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  sudoku: dynamic(
+    () => import("@/games/sudoku/SudokuGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  memory: dynamic(
+    () => import("@/games/memory/MemoryGame"),
     { loading: GameSkeleton, ssr: false }
   ),
 };
@@ -61,6 +70,7 @@ export default function GamePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
+      <GameJsonLd game={game} slug={params.slug} />
       <GameComponent />
     </div>
   );

@@ -12,6 +12,7 @@ import { cn } from "@/utils/cn";
 const navLinks = [
   { href: "/oyunlar", label: "Oyunlar" },
   { href: "/siralama", label: "Sıralama" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function Navbar() {

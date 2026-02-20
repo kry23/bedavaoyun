@@ -19,9 +19,10 @@ import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useKeyboard } from "@/hooks/useKeyboard";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Share2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { toast } from "sonner";
+import { SITE_NAME } from "@/utils/constants";
 
 const GAME_INFO = gameRegistry.wordle;
 
@@ -68,6 +69,23 @@ export default function WordleGame() {
     setState(createRandomGame());
     setShowModal(false);
   }, []);
+
+  const shareResult = useCallback(() => {
+    const emojiMap: Record<LetterState, string> = {
+      correct: "🟩",
+      present: "🟨",
+      absent: "⬛",
+      empty: "⬜",
+    };
+    const grid = state.guesses
+      .map((row) => row.map((cell) => emojiMap[cell.state]).join(""))
+      .join("\n");
+    const result = state.status === "won" ? `${state.guesses.length}/${MAX_ATTEMPTS}` : `X/${MAX_ATTEMPTS}`;
+    const text = `${SITE_NAME} - Kelime Tahmin ${result}\n\n${grid}\n\nbedava-oyun.com/oyunlar/wordle`;
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success("Sonuç panoya kopyalandı!");
+    });
+  }, [state]);
 
   // Build display grid
   const rows = [];
@@ -151,12 +169,20 @@ export default function WordleGame() {
         ))}
       </div>
 
-      {/* Reveal target on loss */}
-      {state.status === "lost" && (
-        <p className="mt-4 text-center text-sm">
-          Doğru kelime:{" "}
-          <strong className="text-primary-600">{state.target}</strong>
-        </p>
+      {/* Share + reveal on game end */}
+      {state.status !== "playing" && (
+        <div className="mt-4 flex flex-col items-center gap-2">
+          <Button size="sm" variant="primary" onClick={shareResult}>
+            <Share2 className="mr-1 h-3.5 w-3.5" />
+            Sonucu Paylaş
+          </Button>
+          {state.status === "lost" && (
+            <p className="text-center text-sm">
+              Doğru kelime:{" "}
+              <strong className="text-primary-600">{state.target}</strong>
+            </p>
+          )}
+        </div>
       )}
 
       <GameOverModal

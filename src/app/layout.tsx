@@ -4,6 +4,9 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { WebsiteJsonLd } from "@/components/game/JsonLd";
+import { InstallBanner } from "@/components/pwa/InstallBanner";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/utils/constants";
 import "./globals.css";
 
@@ -46,14 +49,17 @@ export default function RootLayout({
     <html lang="tr" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <WebsiteJsonLd />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <GoogleAnalytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <InstallBanner />
           <Toaster position="bottom-right" />
         </ThemeProvider>
       </body>
