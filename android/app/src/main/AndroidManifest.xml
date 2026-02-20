@@ -25,11 +25,11 @@
 
             <meta-data
                 android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR"
-                android:value="#6366F1" />
+                android:resource="@color/statusBarColor" />
 
             <meta-data
                 android:name="android.support.customtabs.trusted.NAVIGATION_BAR_COLOR"
-                android:value="#0F172A" />
+                android:resource="@color/navigationBarColor" />
 
             <meta-data
                 android:name="android.support.customtabs.trusted.SPLASH_IMAGE_DRAWABLE"
@@ -37,7 +37,7 @@
 
             <meta-data
                 android:name="android.support.customtabs.trusted.SPLASH_SCREEN_BACKGROUND_COLOR"
-                android:value="#0F172A" />
+                android:resource="@color/splashBackground" />
 
             <meta-data
                 android:name="android.support.customtabs.trusted.SCREEN_ORIENTATION"
