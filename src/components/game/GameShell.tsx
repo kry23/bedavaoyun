@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { GameInfo } from "@/types/game";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { AdBanner } from "@/components/ads/AdBanner";
 
 interface GameShellProps {
   game: GameInfo;
@@ -42,6 +43,9 @@ export function GameShell({ game, children, controls, stats }: GameShellProps) {
       )}
 
       {children}
+
+      {/* Ad below game */}
+      <AdBanner slot="GAME_BOTTOM_AD" format="horizontal" className="mt-4 w-full max-w-[600px]" />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Gamepad2 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { SoundToggle } from "@/components/ui/SoundToggle";
 import { MobileNav } from "./MobileNav";
 import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
@@ -53,6 +54,7 @@ export function Navbar() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <SoundToggle />
           <ThemeToggle />
 
           {/* Desktop auth */}

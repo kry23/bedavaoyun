@@ -55,6 +55,24 @@ export const gameRegistry: Record<string, GameInfo> = {
     sortDirection: "asc",
     scoreLabel: "Hamle",
   },
+  tetris: {
+    name: "Tetris",
+    slug: "tetris",
+    description: "Blokları sıra, satırları temizle!",
+    icon: "🧱",
+    color: "#06B6D4",
+    sortDirection: "desc",
+    scoreLabel: "Puan",
+  },
+  puzzle15: {
+    name: "15 Bulmaca",
+    slug: "puzzle15",
+    description: "Karoları kaydırarak sıraya diz!",
+    icon: "🔲",
+    color: "#14B8A6",
+    sortDirection: "asc",
+    scoreLabel: "Hamle",
+  },
 };
 
 export const gameList = Object.values(gameRegistry);
