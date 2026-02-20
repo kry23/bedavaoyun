@@ -37,6 +37,8 @@ export const metadata: Metadata = {
   keywords: [
     "bedava oyun", "ücretsiz oyun", "tarayıcı oyunları", "online oyun",
     "mayın tarlası", "2048", "yılan oyunu", "wordle türkçe", "kelime tahmin",
+    "sudoku oyna", "hafıza oyunu", "beyin oyunları", "bulmaca oyunları",
+    "mobil oyun", "indirmeden oyna",
   ],
   verification: {
     google: "zxhKXzL9Hnn3v5DzPKQp4z35Uuj6fZxTFMVzcrqC_CU",
