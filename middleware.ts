@@ -33,10 +33,19 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Profil sayfası auth gerektirir
-  if (!user && request.nextUrl.pathname.startsWith("/profil")) {
+  const pathname = request.nextUrl.pathname;
+
+  // Turkish profile page requires auth
+  if (!user && pathname.startsWith("/profil")) {
     const url = request.nextUrl.clone();
     url.pathname = "/giris";
+    return NextResponse.redirect(url);
+  }
+
+  // English profile page requires auth
+  if (!user && pathname.startsWith("/en/profile")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/en/login";
     return NextResponse.redirect(url);
   }
 
@@ -44,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profil", "/profil/:path*"],
+  matcher: ["/profil", "/profil/:path*", "/en/profile", "/en/profile/:path*"],
 };

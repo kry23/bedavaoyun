@@ -5,34 +5,39 @@ import { usePathname } from "next/navigation";
 import { Gamepad2 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SoundToggle } from "@/components/ui/SoundToggle";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getLocalizedPath, getHomePath } from "@/i18n/navigation";
 import { cn } from "@/utils/cn";
-
-const navLinks = [
-  { href: "/oyunlar", label: "Oyunlar" },
-  { href: "/siralama", label: "Sıralama" },
-  { href: "/blog", label: "Blog" },
-];
 
 export function Navbar() {
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const t = useTranslation();
+  const locale = useLocale();
+
+  const navLinks = [
+    { href: getLocalizedPath("games", locale), label: t.nav.games },
+    { href: getLocalizedPath("leaderboard", locale), label: t.nav.leaderboard },
+    { href: getLocalizedPath("blog", locale), label: t.nav.blog },
+  ];
 
   const handleLogout = async () => {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return;
     const supabase = createClient();
     await supabase.auth.signOut();
-    window.location.href = "/";
+    window.location.href = getHomePath(locale);
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[hsl(var(--border))] bg-[hsl(var(--background))]/95 backdrop-blur supports-[backdrop-filter]:bg-[hsl(var(--background))]/60">
       <div className="mx-auto flex h-14 max-w-5xl items-center px-4">
-        <Link href="/" className="mr-6 flex items-center gap-2 font-bold">
+        <Link href={getHomePath(locale)} className="mr-6 flex items-center gap-2 font-bold">
           <Gamepad2 className="h-5 w-5 text-primary-500" />
-          <span>Bedava Oyun</span>
+          <span>{t.common.siteName}</span>
         </Link>
 
         {/* Desktop nav */}
@@ -55,6 +60,7 @@ export function Navbar() {
 
         <div className="ml-auto flex items-center gap-2">
           <SoundToggle />
+          <LanguageSwitcher />
           <ThemeToggle />
 
           {/* Desktop auth */}
@@ -62,31 +68,31 @@ export function Navbar() {
             {loading ? null : user ? (
               <>
                 <Link
-                  href="/profil"
+                  href={getLocalizedPath("profile", locale)}
                   className="rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-[hsl(var(--muted))]"
                 >
-                  Profil
+                  {t.nav.profile}
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="rounded-lg px-3 py-2 text-sm font-medium text-[hsl(var(--muted-foreground))] transition-colors hover:bg-[hsl(var(--muted))]"
                 >
-                  Çıkış
+                  {t.nav.logout}
                 </button>
               </>
             ) : (
               <>
                 <Link
-                  href="/giris"
+                  href={getLocalizedPath("login", locale)}
                   className="rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-[hsl(var(--muted))]"
                 >
-                  Giriş Yap
+                  {t.nav.login}
                 </Link>
                 <Link
-                  href="/kayit"
+                  href={getLocalizedPath("register", locale)}
                   className="rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
                 >
-                  Kayıt Ol
+                  {t.nav.register}
                 </Link>
               </>
             )}

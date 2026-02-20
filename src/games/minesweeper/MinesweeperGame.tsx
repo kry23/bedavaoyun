@@ -10,6 +10,8 @@ import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useGameTimer } from "@/hooks/useGameTimer";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { Flag } from "lucide-react";
 
 const GAME_INFO = gameRegistry.minesweeper;
@@ -26,6 +28,9 @@ export default function MinesweeperGame() {
   const [showModal, setShowModal] = useState(false);
   const { theme } = useTheme();
   const { elapsed, start, stop, reset, formatTime } = useGameTimer();
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("minesweeper", locale);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -210,7 +215,7 @@ export default function MinesweeperGame() {
               variant={difficulty === d ? "primary" : "secondary"}
               onClick={() => initGame(d)}
             >
-              {DIFFICULTIES[d].label}
+              {t.difficulty[DIFFICULTIES[d].label as keyof typeof t.difficulty]}
             </Button>
           ))}
         </>
@@ -235,7 +240,7 @@ export default function MinesweeperGame() {
           className="touch-none mx-auto block cursor-pointer"
         />
         <p className="mt-2 text-center text-xs text-[hsl(var(--muted-foreground))]">
-          Sol tık: Aç | Sağ tık: Bayrak | Mobil: Uzun bas = Bayrak
+          {t.minesweeper.instructions}
         </p>
       </div>
 
@@ -243,8 +248,8 @@ export default function MinesweeperGame() {
         open={showModal}
         won={gameStatus === "won"}
         score={Math.floor(elapsed / 1000)}
-        scoreLabel="Süre (sn)"
-        gameName="Mayın Tarlası"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="minesweeper"
         onClose={() => setShowModal(false)}
         onRestart={() => initGame(difficulty)}

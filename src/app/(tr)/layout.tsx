@@ -1,29 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "next-themes";
-import { Toaster } from "sonner";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { AppShell } from "@/components/layout/AppShell";
 import { WebsiteJsonLd } from "@/components/game/JsonLd";
-import { InstallBanner } from "@/components/pwa/InstallBanner";
-import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/utils/constants";
+import { SITE_NAME, SITE_URL } from "@/utils/constants";
 import Script from "next/script";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} — ${SITE_DESCRIPTION}`,
+    default: `${SITE_NAME} — Tarayıcıda ücretsiz bulmaca ve klasik oyunlar`,
     template: `%s | ${SITE_NAME}`,
   },
-  description: SITE_DESCRIPTION,
+  description: "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar",
   metadataBase: new URL(SITE_URL),
   openGraph: {
     title: SITE_NAME,
-    description: SITE_DESCRIPTION,
+    description: "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar",
     url: SITE_URL,
     siteName: SITE_NAME,
     locale: "tr_TR",
@@ -33,7 +24,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: SITE_NAME,
-    description: SITE_DESCRIPTION,
+    description: "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar",
     images: ["/og/default.png"],
   },
   keywords: [
@@ -42,12 +33,19 @@ export const metadata: Metadata = {
     "sudoku oyna", "hafıza oyunu", "tetris oyna", "15 bulmaca",
     "beyin oyunları", "bulmaca oyunları", "mobil oyun", "indirmeden oyna",
   ],
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "tr": SITE_URL,
+      "en": `${SITE_URL}/en`,
+    },
+  },
   verification: {
     google: "zxhKXzL9Hnn3v5DzPKQp4z35Uuj6fZxTFMVzcrqC_CU",
   },
 };
 
-export default function RootLayout({
+export default function TurkishRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -66,19 +64,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className={`${inter.className} antialiased`}>
-        <GoogleAnalytics />
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <InstallBanner />
-          <ServiceWorkerRegister />
-          <Toaster position="bottom-right" />
-        </ThemeProvider>
-      </body>
+      <AppShell locale="tr">{children}</AppShell>
     </html>
   );
 }

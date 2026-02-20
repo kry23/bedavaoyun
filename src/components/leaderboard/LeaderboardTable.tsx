@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { RankBadge } from "./RankBadge";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
 
 interface ScoreEntry {
   id: string;
@@ -34,6 +35,8 @@ export function LeaderboardTable({
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<"daily" | "weekly" | "all">("all");
   const [error, setError] = useState<string | null>(null);
+  const t = useTranslation();
+  const locale = useLocale();
 
   useEffect(() => {
     setLoading(true);
@@ -41,7 +44,7 @@ export function LeaderboardTable({
 
     fetch(`/api/leaderboard/${gameSlug}?period=${period}&limit=50`)
       .then((res) => {
-        if (!res.ok) throw new Error("Veriler yüklenemedi");
+        if (!res.ok) throw new Error(t.leaderboard.loadError);
         return res.json();
       })
       .then((data) => {
@@ -52,17 +55,19 @@ export function LeaderboardTable({
         setError(err.message);
         setLoading(false);
       });
-  }, [gameSlug, period]);
+  }, [gameSlug, period, t.leaderboard.loadError]);
+
+  const dateLocale = locale === "tr" ? "tr-TR" : "en-US";
 
   const displayScore = (entry: ScoreEntry) => {
     if (gameSlug === "minesweeper") return formatTimeScore(entry.score);
-    return entry.score.toLocaleString("tr-TR");
+    return entry.score.toLocaleString(dateLocale);
   };
 
   const periods = [
-    { value: "daily" as const, label: "Bugün" },
-    { value: "weekly" as const, label: "Bu Hafta" },
-    { value: "all" as const, label: "Tüm Zamanlar" },
+    { value: "daily" as const, label: t.leaderboard.today },
+    { value: "weekly" as const, label: t.leaderboard.thisWeek },
+    { value: "all" as const, label: t.leaderboard.allTime },
   ];
 
   return (
@@ -100,17 +105,17 @@ export function LeaderboardTable({
         </p>
       ) : entries.length === 0 ? (
         <p className="py-8 text-center text-[hsl(var(--muted-foreground))]">
-          Henüz skor kaydı yok. İlk sen ol!
+          {t.leaderboard.noScores}
         </p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[hsl(var(--border))] text-left text-[hsl(var(--muted-foreground))]">
-                <th className="pb-2 pl-2 pr-4 font-medium">Sıra</th>
-                <th className="pb-2 pr-4 font-medium">Oyuncu</th>
+                <th className="pb-2 pl-2 pr-4 font-medium">{t.leaderboard.rank}</th>
+                <th className="pb-2 pr-4 font-medium">{t.common.player}</th>
                 <th className="pb-2 pr-4 font-medium">{scoreLabel}</th>
-                <th className="pb-2 pr-4 font-medium">Tarih</th>
+                <th className="pb-2 pr-4 font-medium">{t.leaderboard.date}</th>
               </tr>
             </thead>
             <tbody>
@@ -123,11 +128,11 @@ export function LeaderboardTable({
                     <RankBadge rank={i + 1} />
                   </td>
                   <td className="py-2.5 pr-4 font-medium">
-                    {entry.profiles?.username || "Anonim"}
+                    {entry.profiles?.username || t.leaderboard.anonymous}
                   </td>
                   <td className="py-2.5 pr-4">{displayScore(entry)}</td>
                   <td className="py-2.5 pr-4 text-[hsl(var(--muted-foreground))]">
-                    {new Date(entry.created_at).toLocaleDateString("tr-TR")}
+                    {new Date(entry.created_at).toLocaleDateString(dateLocale)}
                   </td>
                 </tr>
               ))}

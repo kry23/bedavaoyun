@@ -21,6 +21,8 @@ import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useKeyboard } from "@/hooks/useKeyboard";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw, Pause, Play } from "lucide-react";
 import { cn } from "@/utils/cn";
 
@@ -31,6 +33,9 @@ export default function TetrisGame() {
   const [state, setState] = useState<TetrisState>(createGame);
   const [showModal, setShowModal] = useState(false);
   const dropRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("tetris", locale);
 
   const initGame = useCallback(() => {
     setState(createGame());
@@ -125,21 +130,21 @@ export default function TetrisGame() {
         <div className="flex items-center gap-2">
           <Button size="sm" variant="secondary" onClick={togglePause}>
             {state.status === "paused" ? (
-              <><Play className="mr-1 h-3.5 w-3.5" /> Devam</>
+              <><Play className="mr-1 h-3.5 w-3.5" /> {t.tetris.continue}</>
             ) : (
-              <><Pause className="mr-1 h-3.5 w-3.5" /> Duraklat</>
+              <><Pause className="mr-1 h-3.5 w-3.5" /> {t.tetris.pause}</>
             )}
           </Button>
           <Button size="sm" variant="secondary" onClick={initGame}>
-            <RotateCcw className="mr-1 h-3.5 w-3.5" /> Yeni Oyun
+            <RotateCcw className="mr-1 h-3.5 w-3.5" /> {t.common.newGame}
           </Button>
         </div>
       }
       stats={
         <>
-          <span>Skor: {state.score}</span>
-          <span>Satır: {state.lines}</span>
-          <span>Seviye: {state.level}</span>
+          <span>{t.common.score} {state.score}</span>
+          <span>{t.tetris.lines} {state.lines}</span>
+          <span>{t.tetris.level} {state.level}</span>
         </>
       }
     >
@@ -175,7 +180,7 @@ export default function TetrisGame() {
         <div className="flex flex-col gap-4">
           <div>
             <p className="mb-1 text-xs font-medium text-[hsl(var(--muted-foreground))]">
-              Sonraki
+              {t.tetris.next}
             </p>
             <div className="inline-grid grid-cols-4 gap-0">
               {Array.from({ length: 4 }, (_, r) =>
@@ -208,33 +213,33 @@ export default function TetrisGame() {
               onTouchStart={() => setState((s) => rotate(s))}
               className="rounded-lg bg-[hsl(var(--muted))] p-3 text-xs font-bold"
             >
-              Dön
+              {t.tetris.rotate}
             </button>
             <div className="flex gap-1.5">
               <button
                 onTouchStart={() => setState((s) => moveLeft(s))}
                 className="flex-1 rounded-lg bg-[hsl(var(--muted))] p-3 text-xs font-bold"
               >
-                Sol
+                {t.tetris.left}
               </button>
               <button
                 onTouchStart={() => setState((s) => moveDown(s))}
                 className="flex-1 rounded-lg bg-[hsl(var(--muted))] p-3 text-xs font-bold"
               >
-                Aşağı
+                {t.tetris.down}
               </button>
               <button
                 onTouchStart={() => setState((s) => moveRight(s))}
                 className="flex-1 rounded-lg bg-[hsl(var(--muted))] p-3 text-xs font-bold"
               >
-                Sağ
+                {t.tetris.right}
               </button>
             </div>
             <button
               onTouchStart={() => setState((s) => hardDrop(s))}
               className="rounded-lg bg-primary-500 p-3 text-xs font-bold text-white"
             >
-              Düşür
+              {t.tetris.drop}
             </button>
           </div>
         </div>
@@ -242,7 +247,7 @@ export default function TetrisGame() {
 
       {state.status === "paused" && (
         <div className="mt-4 text-center text-sm text-[hsl(var(--muted-foreground))]">
-          Duraklatıldı — devam etmek için P tuşuna basın
+          {t.tetris.paused}
         </div>
       )}
 
@@ -250,8 +255,8 @@ export default function TetrisGame() {
         open={showModal}
         won={false}
         score={state.score}
-        scoreLabel="Puan"
-        gameName="Tetris"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="tetris"
         onClose={() => setShowModal(false)}
         onRestart={initGame}

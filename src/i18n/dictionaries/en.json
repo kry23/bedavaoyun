@@ -1,0 +1,164 @@
+{
+  "common": {
+    "siteName": "Bedava Oyun",
+    "siteDescription": "Free puzzle and classic games in your browser",
+    "play": "Play",
+    "free": "Free",
+    "newGame": "New Game",
+    "score": "Score:",
+    "best": "Best:",
+    "moves": "Moves:",
+    "time": "Time",
+    "points": "Points",
+    "guess": "Guess",
+    "player": "Player"
+  },
+  "nav": {
+    "games": "Games",
+    "leaderboard": "Leaderboard",
+    "blog": "Blog",
+    "profile": "Profile",
+    "login": "Sign In",
+    "register": "Sign Up",
+    "logout": "Sign Out"
+  },
+  "home": {
+    "hero": "Free Browser Games",
+    "heroDescription": "Play instantly — no sign-up needed! Enjoy free classic puzzle and arcade games in your browser, save your scores, and compete on the leaderboard.",
+    "gamesCount": "Games",
+    "leaderboardLabel": "Leaderboard"
+  },
+  "games": {
+    "allGames": "All Games",
+    "allGamesDesc": "Free browser games. Minesweeper, 2048, Snake and more!",
+    "relatedGames": "Other Games",
+    "playOnline": "Play Free Online",
+    "playGameOnline": "— play free online in your browser."
+  },
+  "gameOver": {
+    "congratulations": "Congratulations!",
+    "gameOver": "Game Over!",
+    "saveScore": "Save Score",
+    "saving": "Saving...",
+    "saved": "Score saved!",
+    "loginToSave": "Sign In & Save Score",
+    "playAgain": "Play Again",
+    "share": "Share",
+    "shareText": "{gameName} — {scoreLabel}: {score}! Play free at bedava-oyun.com!",
+    "shareTextGeneric": "{scoreLabel}: {score}! Play free at bedava-oyun.com!"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "description": "Game leaderboards. See the best players!",
+    "viewLeaderboard": "View leaderboard",
+    "ranking": "Leaderboard",
+    "leaderboardDesc": "leaderboard — see the best players!",
+    "rank": "Rank",
+    "date": "Date",
+    "today": "Today",
+    "thisWeek": "This Week",
+    "allTime": "All Time",
+    "noScores": "No scores yet. Be the first!",
+    "anonymous": "Anonymous",
+    "loadError": "Failed to load data"
+  },
+  "auth": {
+    "loginTitle": "Sign In",
+    "registerTitle": "Sign Up",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "password": "Password",
+    "username": "Username",
+    "usernamePlaceholder": "player123",
+    "loggingIn": "Signing in...",
+    "registering": "Signing up...",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "loginSuccess": "Signed in successfully!",
+    "registerSuccess": "Sign up successful! You can now sign in.",
+    "supabaseNotConfigured": "Supabase is not configured yet"
+  },
+  "profile": {
+    "title": "Profile",
+    "loginRequired": "You need to sign in to view your profile.",
+    "quickAccess": "Quick Access",
+    "totalGames": "Total Games",
+    "wins": "Wins",
+    "winRate": "Win Rate",
+    "perGame": "Per Game",
+    "game": "Game",
+    "bestScore": "Best"
+  },
+  "blog": {
+    "title": "Blog",
+    "metaTitle": "Blog - Game Guides & News",
+    "metaDescription": "Game guides, strategies, tips and news from the world of browser games.",
+    "subtitle": "Game guides, strategies and tips",
+    "backToBlog": "Back to Blog"
+  },
+  "pwa": {
+    "installTitle": "Install App",
+    "installDescription": "Add Bedava Oyun to your home screen and play offline!",
+    "install": "Install"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "The page you're looking for could not be found.",
+    "goHome": "Go to Home"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "minesweeper": {
+    "instructions": "Left click: Reveal | Right click: Flag | Mobile: Long press = Flag"
+  },
+  "game2048": {
+    "instructions": "Use arrow keys or swipe to play"
+  },
+  "snake": {
+    "start": "Start",
+    "instructions": "Arrow keys / WASD / Swipe to play"
+  },
+  "wordle": {
+    "newWord": "New Word",
+    "shareResult": "Share Result",
+    "correctWord": "Correct word:",
+    "enterFiveLetters": "Enter a 5-letter word",
+    "resultCopied": "Result copied to clipboard!"
+  },
+  "sudoku": {
+    "refresh": "Refresh",
+    "errors": "Errors:",
+    "noteOn": "Notes On",
+    "noteOff": "Notes Off",
+    "delete": "Delete"
+  },
+  "memory": {
+    "refresh": "Refresh",
+    "matches": "Matches:"
+  },
+  "tetris": {
+    "continue": "Continue",
+    "pause": "Pause",
+    "lines": "Lines:",
+    "level": "Level:",
+    "next": "Next",
+    "rotate": "Rotate",
+    "left": "Left",
+    "down": "Down",
+    "right": "Right",
+    "drop": "Drop",
+    "paused": "Paused — press P to continue"
+  },
+  "puzzle15": {
+    "shuffle": "Shuffle"
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "meta": {
+    "keywords": "free games, browser games, online games, minesweeper, 2048, snake game, wordle, word guess, sudoku online, memory game, tetris online, 15 puzzle, brain games, puzzle games, mobile games, play without download"
+  }
+}

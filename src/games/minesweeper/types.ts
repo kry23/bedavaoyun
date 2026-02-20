@@ -29,7 +29,7 @@ export interface MinesweeperState {
 }
 
 export const DIFFICULTIES: Record<Difficulty, DifficultyConfig> = {
-  easy: { width: 9, height: 9, mines: 10, label: "Kolay" },
-  medium: { width: 16, height: 16, mines: 40, label: "Orta" },
-  hard: { width: 30, height: 16, mines: 99, label: "Zor" },
+  easy: { width: 9, height: 9, mines: 10, label: "easy" },
+  medium: { width: 16, height: 16, mines: 40, label: "medium" },
+  hard: { width: 30, height: 16, mines: 99, label: "hard" },
 };

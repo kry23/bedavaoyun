@@ -23,7 +23,7 @@ export const DIFFICULTY_CONFIG: Record<
   Difficulty,
   { label: string; clues: number }
 > = {
-  easy: { label: "Kolay", clues: 45 },
-  medium: { label: "Orta", clues: 35 },
-  hard: { label: "Zor", clues: 25 },
+  easy: { label: "easy", clues: 45 },
+  medium: { label: "medium", clues: 35 },
+  hard: { label: "hard", clues: 25 },
 };

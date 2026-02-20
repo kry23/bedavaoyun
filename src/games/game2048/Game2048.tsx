@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useSwipe } from "@/hooks/useSwipe";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw } from "lucide-react";
 
 const GAME_INFO = gameRegistry.game2048;
@@ -31,6 +33,9 @@ export default function Game2048() {
   const [gameStatus, setGameStatus] = useState<"idle" | "playing" | "lost">("idle");
   const [showModal, setShowModal] = useState(false);
   const { theme } = useTheme();
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("game2048", locale);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -112,13 +117,13 @@ export default function Game2048() {
       controls={
         <Button size="sm" variant="secondary" onClick={initGame}>
           <RotateCcw className="mr-1 h-3.5 w-3.5" />
-          Yeni Oyun
+          {t.common.newGame}
         </Button>
       }
       stats={
         <>
-          <span>Skor: {score}</span>
-          <span>En İyi: {bestTile}</span>
+          <span>{t.common.score} {score}</span>
+          <span>{t.common.best} {bestTile}</span>
         </>
       }
     >
@@ -128,7 +133,7 @@ export default function Game2048() {
           className="touch-none mx-auto block"
         />
         <p className="mt-2 text-center text-xs text-[hsl(var(--muted-foreground))]">
-          Yön tuşları veya Swipe ile oyna
+          {t.game2048.instructions}
         </p>
       </div>
 
@@ -136,8 +141,8 @@ export default function Game2048() {
         open={showModal}
         won={stateRef.current.won2048}
         score={score}
-        scoreLabel="Puan"
-        gameName="2048"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="game2048"
         onClose={() => setShowModal(false)}
         onRestart={initGame}

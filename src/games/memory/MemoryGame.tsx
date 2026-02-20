@@ -8,6 +8,8 @@ import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useGameTimer } from "@/hooks/useGameTimer";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw } from "lucide-react";
 import { cn } from "@/utils/cn";
 
@@ -18,6 +20,9 @@ export default function MemoryGame() {
   const [showModal, setShowModal] = useState(false);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const timer = useGameTimer(state.status === "playing");
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("memory", locale);
 
   const initGame = useCallback(
     (diff?: Difficulty) => {
@@ -65,20 +70,20 @@ export default function MemoryGame() {
               variant={difficulty === d ? "primary" : "secondary"}
               onClick={() => initGame(d)}
             >
-              {DIFFICULTY_CONFIG[d].label}
+              {t.difficulty[DIFFICULTY_CONFIG[d].label as keyof typeof t.difficulty]}
             </Button>
           ))}
           <Button size="sm" variant="secondary" onClick={() => initGame()}>
             <RotateCcw className="mr-1 h-3.5 w-3.5" />
-            Yenile
+            {t.memory.refresh}
           </Button>
         </div>
       }
       stats={
         <>
-          <span>Hamle: {state.moves}</span>
+          <span>{t.common.moves} {state.moves}</span>
           <span>
-            Eşleşme: {state.matches}/{state.totalPairs}
+            {t.memory.matches} {state.matches}/{state.totalPairs}
           </span>
           <span>{timer.formatted}</span>
         </>
@@ -115,8 +120,8 @@ export default function MemoryGame() {
         open={showModal}
         won={true}
         score={state.moves}
-        scoreLabel="Hamle"
-        gameName="Hafıza Oyunu"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="memory"
         onClose={() => setShowModal(false)}
         onRestart={() => initGame()}

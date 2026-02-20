@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X, Download } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -12,6 +13,7 @@ export function InstallBanner() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const t = useTranslation();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -46,15 +48,15 @@ export function InstallBanner() {
       <div className="flex items-start gap-3">
         <Download className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
         <div className="flex-1">
-          <p className="text-sm font-medium">Uygulamayı Yükle</p>
+          <p className="text-sm font-medium">{t.pwa.installTitle}</p>
           <p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">
-            Bedava Oyun&apos;u ana ekranına ekle, internet olmadan da oyna!
+            {t.pwa.installDescription}
           </p>
           <button
             onClick={handleInstall}
             className="mt-2 rounded-lg bg-primary-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-primary-700"
           >
-            Yükle
+            {t.pwa.install}
           </button>
         </div>
         <button

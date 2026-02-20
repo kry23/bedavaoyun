@@ -1,0 +1,164 @@
+{
+  "common": {
+    "siteName": "Bedava Oyun",
+    "siteDescription": "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar",
+    "play": "Oyna",
+    "free": "Ücretsiz",
+    "newGame": "Yeni Oyun",
+    "score": "Skor:",
+    "best": "En İyi:",
+    "moves": "Hamle:",
+    "time": "Süre",
+    "points": "Puan",
+    "guess": "Tahmin",
+    "player": "Oyuncu"
+  },
+  "nav": {
+    "games": "Oyunlar",
+    "leaderboard": "Sıralama",
+    "blog": "Blog",
+    "profile": "Profil",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "logout": "Çıkış"
+  },
+  "home": {
+    "hero": "Ücretsiz Tarayıcı Oyunları",
+    "heroDescription": "Kayıt olmadan hemen oyna! Klasik bulmaca ve arcade oyunlarını tarayıcında ücretsiz oyna, skorunu kaydet ve sıralamada yarış.",
+    "gamesCount": "Oyun",
+    "leaderboardLabel": "Liderlik Tablosu"
+  },
+  "games": {
+    "allGames": "Tüm Oyunlar",
+    "allGamesDesc": "Ücretsiz tarayıcı oyunları. Mayın Tarlası, 2048, Yılan ve daha fazlası!",
+    "relatedGames": "Diğer Oyunlar",
+    "playOnline": "Ücretsiz Online Oyna",
+    "playGameOnline": "oyununu tarayıcında ücretsiz oyna."
+  },
+  "gameOver": {
+    "congratulations": "Tebrikler!",
+    "gameOver": "Oyun Bitti!",
+    "saveScore": "Skoru Kaydet",
+    "saving": "Kaydediliyor...",
+    "saved": "Skor kaydedildi!",
+    "loginToSave": "Giriş Yap & Skoru Kaydet",
+    "playAgain": "Tekrar Oyna",
+    "share": "Paylaş",
+    "shareText": "{gameName} oyununda {scoreLabel}: {score}! bedava-oyun.com'da sen de oyna!",
+    "shareTextGeneric": "{scoreLabel}: {score}! bedava-oyun.com'da ücretsiz oyna!"
+  },
+  "leaderboard": {
+    "title": "Sıralama",
+    "description": "Oyun liderlik tabloları. En iyi oyuncuları gör!",
+    "viewLeaderboard": "Liderlik tablosunu gör",
+    "ranking": "Sıralaması",
+    "leaderboardDesc": "liderlik tablosu — en iyi oyuncuları gör!",
+    "rank": "Sıra",
+    "date": "Tarih",
+    "today": "Bugün",
+    "thisWeek": "Bu Hafta",
+    "allTime": "Tüm Zamanlar",
+    "noScores": "Henüz skor kaydı yok. İlk sen ol!",
+    "anonymous": "Anonim",
+    "loadError": "Veriler yüklenemedi"
+  },
+  "auth": {
+    "loginTitle": "Giriş Yap",
+    "registerTitle": "Kayıt Ol",
+    "email": "E-posta",
+    "emailPlaceholder": "ornek@email.com",
+    "password": "Şifre",
+    "username": "Kullanıcı Adı",
+    "usernamePlaceholder": "oyuncu123",
+    "loggingIn": "Giriş yapılıyor...",
+    "registering": "Kayıt olunuyor...",
+    "noAccount": "Hesabın yok mu?",
+    "hasAccount": "Zaten hesabın var mı?",
+    "loginSuccess": "Giriş başarılı!",
+    "registerSuccess": "Kayıt başarılı! Giriş yapabilirsiniz.",
+    "supabaseNotConfigured": "Supabase henüz yapılandırılmamış"
+  },
+  "profile": {
+    "title": "Profil",
+    "loginRequired": "Profilinizi görmek için giriş yapmalısınız.",
+    "quickAccess": "Hızlı Erişim",
+    "totalGames": "Toplam Oyun",
+    "wins": "Kazanma",
+    "winRate": "Kazanma Oranı",
+    "perGame": "Oyun Bazlı",
+    "game": "Oyun",
+    "bestScore": "En İyi"
+  },
+  "blog": {
+    "title": "Blog",
+    "metaTitle": "Blog - Oyun Rehberleri ve Haberler",
+    "metaDescription": "Oyun rehberleri, stratejiler, ipuçları ve tarayıcı oyunları dünyasından haberler.",
+    "subtitle": "Oyun rehberleri, stratejiler ve ipuçları",
+    "backToBlog": "Blog'a Dön"
+  },
+  "pwa": {
+    "installTitle": "Uygulamayı Yükle",
+    "installDescription": "Bedava Oyun'u ana ekranına ekle, internet olmadan da oyna!",
+    "install": "Yükle"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Aradığınız sayfa bulunamadı.",
+    "goHome": "Ana Sayfaya Dön"
+  },
+  "difficulty": {
+    "easy": "Kolay",
+    "medium": "Orta",
+    "hard": "Zor"
+  },
+  "minesweeper": {
+    "instructions": "Sol tık: Aç | Sağ tık: Bayrak | Mobil: Uzun bas = Bayrak"
+  },
+  "game2048": {
+    "instructions": "Yön tuşları veya Swipe ile oyna"
+  },
+  "snake": {
+    "start": "Başla",
+    "instructions": "Yön tuşları / WASD / Swipe ile oyna"
+  },
+  "wordle": {
+    "newWord": "Yeni Kelime",
+    "shareResult": "Sonucu Paylaş",
+    "correctWord": "Doğru kelime:",
+    "enterFiveLetters": "5 harfli bir kelime girin",
+    "resultCopied": "Sonuç panoya kopyalandı!"
+  },
+  "sudoku": {
+    "refresh": "Yenile",
+    "errors": "Hata:",
+    "noteOn": "Not Açık",
+    "noteOff": "Not Kapalı",
+    "delete": "Sil"
+  },
+  "memory": {
+    "refresh": "Yenile",
+    "matches": "Eşleşme:"
+  },
+  "tetris": {
+    "continue": "Devam",
+    "pause": "Duraklat",
+    "lines": "Satır:",
+    "level": "Seviye:",
+    "next": "Sonraki",
+    "rotate": "Dön",
+    "left": "Sol",
+    "down": "Aşağı",
+    "right": "Sağ",
+    "drop": "Düşür",
+    "paused": "Duraklatıldı — devam etmek için P tuşuna basın"
+  },
+  "puzzle15": {
+    "shuffle": "Karıştır"
+  },
+  "footer": {
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "meta": {
+    "keywords": "bedava oyun, ücretsiz oyun, tarayıcı oyunları, online oyun, mayın tarlası, 2048, yılan oyunu, wordle türkçe, kelime tahmin, sudoku oyna, hafıza oyunu, tetris oyna, 15 bulmaca, beyin oyunları, bulmaca oyunları, mobil oyun, indirmeden oyna"
+  }
+}

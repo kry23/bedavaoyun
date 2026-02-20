@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useGameTimer } from "@/hooks/useGameTimer";
 import { useKeyboard } from "@/hooks/useKeyboard";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw } from "lucide-react";
 import { cn } from "@/utils/cn";
 
@@ -18,6 +20,9 @@ export default function Puzzle15Game() {
   const [state, setState] = useState<PuzzleState>(createGame);
   const [showModal, setShowModal] = useState(false);
   const timer = useGameTimer(state.status === "playing");
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("puzzle15", locale);
 
   const initGame = useCallback(() => {
     setState(createGame());
@@ -69,12 +74,12 @@ export default function Puzzle15Game() {
       game={GAME_INFO}
       controls={
         <Button size="sm" variant="secondary" onClick={initGame}>
-          <RotateCcw className="mr-1 h-3.5 w-3.5" /> Karıştır
+          <RotateCcw className="mr-1 h-3.5 w-3.5" /> {t.puzzle15.shuffle}
         </Button>
       }
       stats={
         <>
-          <span>Hamle: {state.moves}</span>
+          <span>{t.common.moves} {state.moves}</span>
           <span>{timer.formatted}</span>
         </>
       }
@@ -103,8 +108,8 @@ export default function Puzzle15Game() {
         open={showModal}
         won={true}
         score={state.moves}
-        scoreLabel="Hamle"
-        gameName="15 Bulmaca"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="puzzle15"
         onClose={() => setShowModal(false)}
         onRestart={initGame}

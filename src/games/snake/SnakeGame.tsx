@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useSwipe } from "@/hooks/useSwipe";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 
 const GAME_INFO = gameRegistry.snake;
 
@@ -35,6 +37,9 @@ export default function SnakeGame() {
   const [gameStatus, setGameStatus] = useState<"idle" | "playing" | "lost">("idle");
   const [showModal, setShowModal] = useState(false);
   const { theme } = useTheme();
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("snake", locale);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -142,14 +147,14 @@ export default function SnakeGame() {
   return (
     <GameShell
       game={GAME_INFO}
-      stats={<span>Skor: {score}</span>}
+      stats={<span>{t.common.score} {score}</span>}
     >
       <div className="w-full max-w-[500px]">
         {gameStatus === "idle" && (
           <div className="mb-4 text-center">
-            <Button onClick={startGame}>Başla</Button>
+            <Button onClick={startGame}>{t.snake.start}</Button>
             <p className="mt-2 text-xs text-[hsl(var(--muted-foreground))]">
-              Yön tuşları / WASD / Swipe ile oyna
+              {t.snake.instructions}
             </p>
           </div>
         )}
@@ -163,8 +168,8 @@ export default function SnakeGame() {
         open={showModal}
         won={false}
         score={score}
-        scoreLabel="Puan"
-        gameName="Yılan"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="snake"
         onClose={() => setShowModal(false)}
         onRestart={initGame}

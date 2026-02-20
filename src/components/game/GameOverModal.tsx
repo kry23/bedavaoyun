@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Trophy, RotateCcw } from "lucide-react";
 import { SITE_URL } from "@/utils/constants";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getLocalizedPath } from "@/i18n/navigation";
 
 interface GameOverModalProps {
   open: boolean;
@@ -35,11 +37,21 @@ export function GameOverModal({
   gameSlug,
 }: GameOverModalProps) {
   const { user } = useAuth();
+  const t = useTranslation();
+  const locale = useLocale();
 
   const shareText = gameName
-    ? `${gameName} oyununda ${scoreLabel}: ${score}! bedava-oyun.com'da sen de oyna!`
-    : `${scoreLabel}: ${score}! bedava-oyun.com'da ücretsiz oyna!`;
-  const shareUrl = gameSlug ? `${SITE_URL}/oyunlar/${gameSlug}` : SITE_URL;
+    ? t.gameOver.shareText
+        .replace("{gameName}", gameName)
+        .replace("{scoreLabel}", scoreLabel)
+        .replace("{score}", String(score))
+    : t.gameOver.shareTextGeneric
+        .replace("{scoreLabel}", scoreLabel)
+        .replace("{score}", String(score));
+
+  const shareUrl = gameSlug
+    ? `${SITE_URL}${getLocalizedPath("games", locale, gameSlug)}`
+    : SITE_URL;
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`;
@@ -49,7 +61,7 @@ export function GameOverModal({
       <div className="flex flex-col items-center gap-4 text-center">
         <div className="text-4xl">{won ? "🎉" : "💥"}</div>
         <h2 className="text-2xl font-bold">
-          {won ? "Tebrikler!" : "Oyun Bitti!"}
+          {won ? t.gameOver.congratulations : t.gameOver.gameOver}
         </h2>
         <div className="flex items-center gap-2 text-lg">
           <Trophy className="h-5 w-5 text-yellow-500" />
@@ -69,7 +81,7 @@ export function GameOverModal({
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
             </svg>
-            Paylaş
+            {t.gameOver.share}
           </a>
           <a
             href={whatsappUrl}
@@ -88,23 +100,23 @@ export function GameOverModal({
           {user ? (
             onSaveScore && !saved ? (
               <Button onClick={onSaveScore} disabled={saving} className="w-full">
-                {saving ? "Kaydediliyor..." : "Skoru Kaydet"}
+                {saving ? t.gameOver.saving : t.gameOver.saveScore}
               </Button>
             ) : saved ? (
               <p className="text-sm text-green-600 dark:text-green-400">
-                Skor kaydedildi!
+                {t.gameOver.saved}
               </p>
             ) : null
           ) : (
-            <Link href="/giris" className="w-full">
+            <Link href={getLocalizedPath("login", locale)} className="w-full">
               <Button className="w-full">
-                Giriş Yap &amp; Skoru Kaydet
+                {t.gameOver.loginToSave}
               </Button>
             </Link>
           )}
           <Button variant="secondary" onClick={onRestart} className="w-full">
             <RotateCcw className="mr-2 h-4 w-4" />
-            Tekrar Oyna
+            {t.gameOver.playAgain}
           </Button>
         </div>
       </div>

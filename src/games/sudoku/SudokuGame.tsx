@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useGameTimer } from "@/hooks/useGameTimer";
 import { useKeyboard } from "@/hooks/useKeyboard";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw, Eraser, Pencil } from "lucide-react";
 import { cn } from "@/utils/cn";
 
@@ -20,6 +22,9 @@ export default function SudokuGame() {
   const [noteMode, setNoteMode] = useState(false);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const timer = useGameTimer(state.status === "playing");
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("sudoku", locale);
 
   const initGame = useCallback(
     (diff?: Difficulty) => {
@@ -105,18 +110,18 @@ export default function SudokuGame() {
               variant={difficulty === d ? "primary" : "secondary"}
               onClick={() => initGame(d)}
             >
-              {DIFFICULTY_CONFIG[d].label}
+              {t.difficulty[DIFFICULTY_CONFIG[d].label as keyof typeof t.difficulty]}
             </Button>
           ))}
           <Button size="sm" variant="secondary" onClick={() => initGame()}>
             <RotateCcw className="mr-1 h-3.5 w-3.5" />
-            Yenile
+            {t.sudoku.refresh}
           </Button>
         </div>
       }
       stats={
         <>
-          <span>Hata: {state.mistakes}/{state.maxMistakes}</span>
+          <span>{t.sudoku.errors} {state.mistakes}/{state.maxMistakes}</span>
           <span>{timer.formatted}</span>
         </>
       }
@@ -180,11 +185,11 @@ export default function SudokuGame() {
             onClick={() => setNoteMode((m) => !m)}
           >
             <Pencil className="mr-1 h-3.5 w-3.5" />
-            Not {noteMode ? "Açık" : "Kapalı"}
+            {noteMode ? t.sudoku.noteOn : t.sudoku.noteOff}
           </Button>
           <Button size="sm" variant="secondary" onClick={handleErase}>
             <Eraser className="mr-1 h-3.5 w-3.5" />
-            Sil
+            {t.sudoku.delete}
           </Button>
         </div>
       </div>
@@ -193,8 +198,8 @@ export default function SudokuGame() {
         open={showModal}
         won={state.status === "won"}
         score={timer.elapsed}
-        scoreLabel="Süre"
-        gameName="Sudoku"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="sudoku"
         onClose={() => setShowModal(false)}
         onRestart={() => initGame()}

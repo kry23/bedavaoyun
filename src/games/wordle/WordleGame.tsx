@@ -19,6 +19,8 @@ import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useKeyboard } from "@/hooks/useKeyboard";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw, Share2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { toast } from "sonner";
@@ -37,6 +39,9 @@ export default function WordleGame() {
   const [state, setState] = useState<WordleState>(createRandomGame);
   const [showModal, setShowModal] = useState(false);
   const [shake, setShake] = useState(false);
+  const t = useTranslation();
+  const locale = useLocale();
+  const gameT = getGameTranslation("wordle", locale);
 
   const handleKey = useCallback(
     (key: string) => {
@@ -46,7 +51,7 @@ export default function WordleGame() {
         if (state.currentGuess.length !== WORD_LENGTH) {
           setShake(true);
           setTimeout(() => setShake(false), 500);
-          toast.error("5 harfli bir kelime girin");
+          toast.error(t.wordle.enterFiveLetters);
           return;
         }
         const newState = submitGuess(state);
@@ -81,9 +86,9 @@ export default function WordleGame() {
       .map((row) => row.map((cell) => emojiMap[cell.state]).join(""))
       .join("\n");
     const result = state.status === "won" ? `${state.guesses.length}/${MAX_ATTEMPTS}` : `X/${MAX_ATTEMPTS}`;
-    const text = `${SITE_NAME} - Kelime Tahmin ${result}\n\n${grid}\n\nbedava-oyun.com/oyunlar/wordle`;
+    const text = `${SITE_NAME} - ${gameT.name} ${result}\n\n${grid}\n\nbedava-oyun.com/oyunlar/wordle`;
     navigator.clipboard.writeText(text).then(() => {
-      toast.success("Sonuç panoya kopyalandı!");
+      toast.success(t.wordle.resultCopied);
     });
   }, [state]);
 
@@ -134,7 +139,7 @@ export default function WordleGame() {
       controls={
         <Button size="sm" variant="secondary" onClick={initGame}>
           <RotateCcw className="mr-1 h-3.5 w-3.5" />
-          Yeni Kelime
+          {t.wordle.newWord}
         </Button>
       }
     >
@@ -174,11 +179,11 @@ export default function WordleGame() {
         <div className="mt-4 flex flex-col items-center gap-2">
           <Button size="sm" variant="primary" onClick={shareResult}>
             <Share2 className="mr-1 h-3.5 w-3.5" />
-            Sonucu Paylaş
+            {t.wordle.shareResult}
           </Button>
           {state.status === "lost" && (
             <p className="text-center text-sm">
-              Doğru kelime:{" "}
+              {t.wordle.correctWord}{" "}
               <strong className="text-primary-600">{state.target}</strong>
             </p>
           )}
@@ -189,8 +194,8 @@ export default function WordleGame() {
         open={showModal}
         won={state.status === "won"}
         score={state.guesses.length}
-        scoreLabel="Tahmin"
-        gameName="Kelime Tahmin"
+        scoreLabel={gameT.scoreLabel}
+        gameName={gameT.name}
         gameSlug="wordle"
         onClose={() => setShowModal(false)}
         onRestart={initGame}

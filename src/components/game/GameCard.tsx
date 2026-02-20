@@ -1,14 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import type { GameInfo } from "@/types/game";
+import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { getLocalizedPath } from "@/i18n/navigation";
 
 interface GameCardProps {
   game: GameInfo;
 }
 
 export function GameCard({ game }: GameCardProps) {
+  const t = useTranslation();
+  const locale = useLocale();
+
   return (
     <Link
-      href={`/oyunlar/${game.slug}`}
+      href={getLocalizedPath("games", locale, game.slug)}
       className="group relative flex flex-col items-center gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1"
     >
       <div
@@ -25,7 +32,7 @@ export function GameCard({ game }: GameCardProps) {
         className="mt-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors"
         style={{ backgroundColor: game.color }}
       >
-        Oyna
+        {t.common.play}
       </span>
     </Link>
   );
