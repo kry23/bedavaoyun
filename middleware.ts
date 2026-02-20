@@ -1,7 +1,57 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const LOCALE_COOKIE = "preferred-locale";
+
+function getPreferredLocale(request: NextRequest): "tr" | "en" {
+  // 1. Check cookie (user already chose a language)
+  const cookie = request.cookies.get(LOCALE_COOKIE)?.value;
+  if (cookie === "tr" || cookie === "en") return cookie;
+
+  // 2. Check Accept-Language header
+  const acceptLang = request.headers.get("accept-language") || "";
+  // If Turkish is anywhere in the accept-language, stay Turkish
+  if (acceptLang.includes("tr")) return "tr";
+
+  // 3. Default to English for non-Turkish browsers
+  return "en";
+}
+
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Auto-redirect: if user hits root "/" and prefers English, redirect to /en
+  if (pathname === "/") {
+    const locale = getPreferredLocale(request);
+    if (locale === "en") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/en";
+      const response = NextResponse.redirect(url);
+      response.cookies.set(LOCALE_COOKIE, "en", { path: "/", maxAge: 60 * 60 * 24 * 365 });
+      return response;
+    }
+  }
+
+  // Set locale cookie when user explicitly visits a language path
+  // This remembers their choice for future visits
+  if (pathname.startsWith("/en")) {
+    const response = await handleSupabase(request, pathname);
+    response.cookies.set(LOCALE_COOKIE, "en", { path: "/", maxAge: 60 * 60 * 24 * 365 });
+    return response;
+  }
+
+  // Turkish pages — set cookie so future visits stay Turkish
+  const turkishPages = ["/oyunlar", "/siralama", "/giris", "/kayit", "/profil", "/blog"];
+  if (turkishPages.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
+    const response = await handleSupabase(request, pathname);
+    response.cookies.set(LOCALE_COOKIE, "tr", { path: "/", maxAge: 60 * 60 * 24 * 365 });
+    return response;
+  }
+
+  return handleSupabase(request, pathname);
+}
+
+async function handleSupabase(request: NextRequest, pathname: string) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     return NextResponse.next();
   }
@@ -33,8 +83,6 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
-
   // Turkish profile page requires auth
   if (!user && pathname.startsWith("/profil")) {
     const url = request.nextUrl.clone();
@@ -53,5 +101,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profil", "/profil/:path*", "/en/profile", "/en/profile/:path*"],
+  matcher: [
+    "/",
+    "/oyunlar/:path*",
+    "/siralama/:path*",
+    "/giris",
+    "/kayit",
+    "/profil/:path*",
+    "/blog/:path*",
+    "/en/:path*",
+  ],
 };
