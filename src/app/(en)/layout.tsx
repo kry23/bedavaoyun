@@ -50,7 +50,7 @@ export default function EnglishRootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="/manifest.en.json" />
         <WebsiteJsonLd locale="en" />
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <Script
