@@ -23,7 +23,7 @@ export async function AppShell({ locale, children }: AppShellProps) {
 
   return (
     <body className={`${inter.className} antialiased`}>
-      <GoogleAnalytics />
+      <GoogleAnalytics locale={locale} />
       <LocaleProvider locale={locale} dictionary={dictionary}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex min-h-screen flex-col">
