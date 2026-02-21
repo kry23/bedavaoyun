@@ -3,10 +3,12 @@ import Link from "next/link";
 import { gameList } from "@/lib/game-registry";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getGameTranslation } from "@/i18n/game-translations";
+import { enAlternates } from "@/i18n/alternates";
 
 export const metadata: Metadata = {
   title: "Leaderboard",
   description: "Game leaderboards. See the best players!",
+  alternates: enAlternates("/siralama", "/en/leaderboard"),
 };
 
 export default async function EnglishLeaderboardPage() {

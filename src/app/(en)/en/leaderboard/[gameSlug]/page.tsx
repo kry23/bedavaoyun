@@ -4,6 +4,7 @@ import Link from "next/link";
 import { gameRegistry, gameSlugs } from "@/lib/game-registry";
 import { LeaderboardTable } from "@/components/leaderboard/LeaderboardTable";
 import { getGameTranslation } from "@/i18n/game-translations";
+import { enAlternates } from "@/i18n/alternates";
 
 interface Props {
   params: { gameSlug: string };
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${gt.name} Leaderboard`,
     description: `${gt.name} leaderboard — see the best players!`,
+    alternates: enAlternates(`/siralama/${params.gameSlug}`, `/en/leaderboard/${params.gameSlug}`),
   };
 }
 

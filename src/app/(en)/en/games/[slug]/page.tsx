@@ -6,6 +6,8 @@ import { GameJsonLd } from "@/components/game/JsonLd";
 import { RelatedGames } from "@/components/game/RelatedGames";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { getGameTranslation } from "@/i18n/game-translations";
+import { enAlternates } from "@/i18n/alternates";
+import { SITE_NAME_EN } from "@/utils/constants";
 
 interface Props {
   params: { slug: string };
@@ -61,10 +63,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${gt.name} - Play Free Online`,
     description: `Play ${gt.name} free in your browser. ${gt.description}`,
     openGraph: {
-      title: `${gt.name} | Bedava Oyun`,
+      title: `${gt.name} | ${SITE_NAME_EN}`,
       description: gt.description,
       images: [`/og/${params.slug}.png`],
     },
+    alternates: enAlternates(`/oyunlar/${params.slug}`, `/en/games/${params.slug}`),
   };
 }
 

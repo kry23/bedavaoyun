@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPostLocalized, getBlogSlugsLocalized } from "@/lib/blog";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { SITE_NAME, SITE_URL } from "@/utils/constants";
+import { SITE_NAME, SITE_URL, SITE_URL_EN } from "@/utils/constants";
+import { enAlternates, getBlogSlugTr } from "@/i18n/alternates";
 import { ArrowLeft } from "lucide-react";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getBlogPostLocalized(params.slug, "en");
   if (!post) return {};
+  const trSlug = getBlogSlugTr(params.slug);
   return {
     title: post.title,
     description: post.description,
@@ -21,8 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.description,
       type: "article",
       publishedTime: post.date,
-      url: `${SITE_URL}/en/blog/${post.slug}`,
+      url: `${SITE_URL_EN}/en/blog/${post.slug}`,
     },
+    alternates: trSlug ? enAlternates(`/blog/${trSlug}`, `/en/blog/${params.slug}`) : { canonical: `${SITE_URL_EN}/en/blog/${params.slug}` },
   };
 }
 

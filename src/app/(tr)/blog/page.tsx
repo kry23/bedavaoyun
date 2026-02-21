@@ -3,11 +3,13 @@ import Link from "next/link";
 import { blogPosts } from "@/lib/blog";
 import { Card } from "@/components/ui/Card";
 import { BookOpen } from "lucide-react";
+import { trAlternates } from "@/i18n/alternates";
 
 export const metadata: Metadata = {
   title: "Blog - Oyun Rehberleri ve Haberler",
   description:
     "Oyun rehberleri, stratejiler, ipuçları ve tarayıcı oyunları dünyasından haberler.",
+  alternates: trAlternates("/blog", "/en/blog"),
 };
 
 export default function BlogPage() {

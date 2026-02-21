@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogPost, getBlogSlugs } from "@/lib/blog";
 import { SITE_NAME, SITE_URL } from "@/utils/constants";
 import { ArrowLeft } from "lucide-react";
+import { trAlternates, getBlogSlugEn } from "@/i18n/alternates";
 
 interface Props {
   params: { slug: string };
@@ -12,6 +13,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getBlogPost(params.slug);
   if (!post) return {};
+  const enSlug = getBlogSlugEn(params.slug);
   return {
     title: post.title,
     description: post.description,
@@ -22,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       url: `${SITE_URL}/blog/${post.slug}`,
     },
+    alternates: enSlug ? trAlternates(`/blog/${params.slug}`, `/en/blog/${enSlug}`) : { canonical: `${SITE_URL}/blog/${params.slug}` },
   };
 }
 

@@ -5,6 +5,7 @@ import { gameRegistry, gameSlugs } from "@/lib/game-registry";
 import { GameJsonLd } from "@/components/game/JsonLd";
 import { RelatedGames } from "@/components/game/RelatedGames";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { trAlternates } from "@/i18n/alternates";
 
 interface Props {
   params: { slug: string };
@@ -63,6 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: game.description,
       images: [`/og/${params.slug}.png`],
     },
+    alternates: trAlternates(`/oyunlar/${params.slug}`, `/en/games/${params.slug}`),
   };
 }
 

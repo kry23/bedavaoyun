@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { gameList } from "@/lib/game-registry";
+import { trAlternates } from "@/i18n/alternates";
 
 export const metadata: Metadata = {
   title: "Sıralama",
   description: "Oyun liderlik tabloları. En iyi oyuncuları gör!",
+  alternates: trAlternates("/siralama", "/en/leaderboard"),
 };
 
 export default function LeaderboardPage() {

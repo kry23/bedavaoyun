@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getBlogPostsLocalized } from "@/lib/blog";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { enAlternates } from "@/i18n/alternates";
 
 export const metadata: Metadata = {
   title: "Blog - Game Guides & News",
   description:
     "Game guides, strategies, tips and news from the world of browser games.",
+  alternates: enAlternates("/blog", "/en/blog"),
 };
 
 export default async function EnglishBlogPage() {

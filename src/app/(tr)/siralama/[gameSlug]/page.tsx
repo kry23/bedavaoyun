@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { gameRegistry, gameSlugs } from "@/lib/game-registry";
 import { LeaderboardTable } from "@/components/leaderboard/LeaderboardTable";
+import { trAlternates } from "@/i18n/alternates";
 
 interface Props {
   params: { gameSlug: string };
@@ -18,6 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${game.name} Sıralaması`,
     description: `${game.name} liderlik tablosu — en iyi oyuncuları gör!`,
+    alternates: trAlternates(`/siralama/${params.gameSlug}`, `/en/leaderboard/${params.gameSlug}`),
   };
 }
 

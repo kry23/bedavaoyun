@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import { Gamepad2, Trophy, Users } from "lucide-react";
 import { GameCard } from "@/components/game/GameCard";
 import { gameList } from "@/lib/game-registry";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getGameTranslation } from "@/i18n/game-translations";
+import { SITE_NAME_EN, SITE_URL, SITE_URL_EN } from "@/utils/constants";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME_EN} — Free puzzle and classic games in your browser`,
+  description: "Free browser games. Minesweeper, 2048, Snake, Wordle and more!",
+  alternates: {
+    canonical: SITE_URL_EN,
+    languages: {
+      "tr": SITE_URL,
+      "en": SITE_URL_EN,
+    },
+  },
+};
 
 export default async function EnglishHomePage() {
   const t = await getDictionary("en");

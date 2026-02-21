@@ -1,6 +1,20 @@
+import type { Metadata } from "next";
 import { Gamepad2, Trophy, Users } from "lucide-react";
 import { GameCard } from "@/components/game/GameCard";
 import { gameList } from "@/lib/game-registry";
+import { SITE_NAME, SITE_URL, SITE_URL_EN } from "@/utils/constants";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} — Tarayıcıda ücretsiz bulmaca ve klasik oyunlar`,
+  description: "Tarayıcıda ücretsiz bulmaca ve klasik oyunlar. Mayın Tarlası, 2048, Yılan, Wordle ve daha fazlası!",
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "tr": SITE_URL,
+      "en": SITE_URL_EN,
+    },
+  },
+};
 
 export default function HomePage() {
   return (

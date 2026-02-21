@@ -3,11 +3,13 @@ import { GameCard } from "@/components/game/GameCard";
 import { gameList } from "@/lib/game-registry";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getGameTranslation } from "@/i18n/game-translations";
+import { enAlternates } from "@/i18n/alternates";
 
 export const metadata: Metadata = {
   title: "All Games",
   description:
     "Free browser games. Minesweeper, 2048, Snake and more!",
+  alternates: enAlternates("/oyunlar", "/en/games"),
 };
 
 export default async function EnglishGamesPage() {

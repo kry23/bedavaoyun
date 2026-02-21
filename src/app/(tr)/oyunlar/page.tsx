@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { GameCard } from "@/components/game/GameCard";
 import { gameList } from "@/lib/game-registry";
+import { trAlternates } from "@/i18n/alternates";
 
 export const metadata: Metadata = {
   title: "Tüm Oyunlar",
   description: "Ücretsiz tarayıcı oyunları. Mayın Tarlası, 2048, Yılan ve daha fazlası!",
+  alternates: trAlternates("/oyunlar", "/en/games"),
 };
 
 export default function GamesPage() {
