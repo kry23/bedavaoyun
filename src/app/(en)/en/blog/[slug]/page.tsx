@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPostLocalized, getBlogSlugsLocalized } from "@/lib/blog";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { SITE_NAME, SITE_URL, SITE_URL_EN } from "@/utils/constants";
+import { SITE_NAME_EN, SITE_URL_EN } from "@/utils/constants";
 import { enAlternates, getBlogSlugTr } from "@/i18n/alternates";
 import { ArrowLeft } from "lucide-react";
 
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.title,
     description: post.description,
     openGraph: {
-      title: `${post.title} | ${SITE_NAME}`,
+      title: `${post.title} | ${SITE_NAME_EN}`,
       description: post.description,
       type: "article",
       publishedTime: post.date,
@@ -49,15 +49,15 @@ export default async function EnglishBlogPostPage({ params }: Props) {
     datePublished: post.date,
     author: {
       "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
+      name: SITE_NAME_EN,
+      url: SITE_URL_EN,
     },
     publisher: {
       "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
+      name: SITE_NAME_EN,
+      url: SITE_URL_EN,
     },
-    url: `${SITE_URL}/en/blog/${post.slug}`,
+    url: `${SITE_URL_EN}/en/blog/${post.slug}`,
     inLanguage: "en",
   };
 

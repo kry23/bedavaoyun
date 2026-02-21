@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://bedava-oyun.com/sitemap.xml
+Sitemap: https://freegames4you.online/sitemap.xml

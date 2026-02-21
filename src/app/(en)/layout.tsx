@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AppShell } from "@/components/layout/AppShell";
+import { WebsiteJsonLd } from "@/components/game/JsonLd";
 import { SITE_NAME_EN, SITE_URL, SITE_URL_EN } from "@/utils/constants";
 import Script from "next/script";
 import "../globals.css";
@@ -50,6 +51,7 @@ export default function EnglishRootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <WebsiteJsonLd locale="en" />
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <Script
             async
