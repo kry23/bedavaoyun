@@ -1,11 +1,12 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Globe } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useLocale } from "@/i18n/useTranslation";
 import { getAlternatePath } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/config";
+import { SITE_URL, SITE_URL_EN } from "@/utils/constants";
 
 const languages: { locale: Locale; label: string; flag: string }[] = [
   { locale: "tr", label: "Türkçe", flag: "🇹🇷" },
@@ -17,7 +18,6 @@ export function LanguageSwitcher() {
   const ref = useRef<HTMLDivElement>(null);
   const locale = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -34,10 +34,17 @@ export function LanguageSwitcher() {
       setOpen(false);
       return;
     }
-    // Set cookie so middleware remembers the choice
     document.cookie = `preferred-locale=${targetLocale};path=/;max-age=${60 * 60 * 24 * 365}`;
     const newPath = getAlternatePath(pathname, targetLocale);
-    router.push(newPath);
+
+    // Cross-domain navigation
+    if (targetLocale === "en") {
+      // /en/games/minesweeper → freegames4you.online/en/games/minesweeper
+      window.location.href = `${SITE_URL_EN}${newPath}`;
+    } else {
+      // /oyunlar/minesweeper → bedava-oyun.com/oyunlar/minesweeper
+      window.location.href = `${SITE_URL}${newPath}`;
+    }
     setOpen(false);
   };
 

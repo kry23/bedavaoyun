@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AppShell } from "@/components/layout/AppShell";
 import { WebsiteJsonLd } from "@/components/game/JsonLd";
-import { SITE_NAME, SITE_URL } from "@/utils/constants";
+import { SITE_NAME, SITE_URL, SITE_URL_EN } from "@/utils/constants";
 import Script from "next/script";
 import "../globals.css";
 
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
     languages: {
       "tr": SITE_URL,
-      "en": `${SITE_URL}/en`,
+      "en": SITE_URL_EN,
     },
   },
   verification: {

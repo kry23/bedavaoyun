@@ -2,38 +2,64 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 const LOCALE_COOKIE = "preferred-locale";
+const EN_DOMAIN = "freegames4you.online";
+
+function isEnglishDomain(host: string): boolean {
+  return host === EN_DOMAIN || host === `www.${EN_DOMAIN}`;
+}
 
 function getPreferredLocale(request: NextRequest): "tr" | "en" {
-  // 1. Check cookie (user already chose a language)
+  // 1. English domain always means English
+  const host = request.headers.get("host") || "";
+  if (isEnglishDomain(host)) return "en";
+
+  // 2. Check cookie (user already chose a language)
   const cookie = request.cookies.get(LOCALE_COOKIE)?.value;
   if (cookie === "tr" || cookie === "en") return cookie;
 
-  // 2. Check Accept-Language header
+  // 3. Check Accept-Language header
   const acceptLang = request.headers.get("accept-language") || "";
-  // If Turkish is anywhere in the accept-language, stay Turkish
   if (acceptLang.includes("tr")) return "tr";
 
-  // 3. Default to English for non-Turkish browsers
+  // 4. Default to English for non-Turkish browsers
   return "en";
 }
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  const host = request.headers.get("host") || "";
 
-  // Auto-redirect: if user hits root "/" and prefers English, redirect to /en
-  if (pathname === "/") {
-    const locale = getPreferredLocale(request);
-    if (locale === "en") {
+  // English domain: redirect root to /en, redirect Turkish paths to English domain paths
+  if (isEnglishDomain(host)) {
+    // Root → /en
+    if (pathname === "/") {
       const url = request.nextUrl.clone();
       url.pathname = "/en";
-      const response = NextResponse.redirect(url);
+      return NextResponse.redirect(url);
+    }
+
+    // Block Turkish-only paths on English domain → redirect to /en
+    const turkishOnlyPaths = ["/oyunlar", "/siralama", "/giris", "/kayit", "/profil", "/blog"];
+    if (turkishOnlyPaths.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/en";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Turkish domain: auto-redirect "/" based on browser preference
+  if (!isEnglishDomain(host) && pathname === "/") {
+    const locale = getPreferredLocale(request);
+    if (locale === "en") {
+      // Redirect to English domain instead of /en path
+      const enUrl = `https://${EN_DOMAIN}/en`;
+      const response = NextResponse.redirect(enUrl);
       response.cookies.set(LOCALE_COOKIE, "en", { path: "/", maxAge: 60 * 60 * 24 * 365 });
       return response;
     }
   }
 
   // Set locale cookie when user explicitly visits a language path
-  // This remembers their choice for future visits
   if (pathname.startsWith("/en")) {
     const response = await handleSupabase(request, pathname);
     response.cookies.set(LOCALE_COOKIE, "en", { path: "/", maxAge: 60 * 60 * 24 * 365 });
@@ -102,13 +128,6 @@ async function handleSupabase(request: NextRequest, pathname: string) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico, icons, og images, manifest, etc.
-     * - api routes
-     */
     "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp3|wav)$|manifest\\.json|api/).*)",
   ],
 };
