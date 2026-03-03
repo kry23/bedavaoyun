@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Register",
   description: "Create a free account and save your scores.",
   alternates: enAlternates("/kayit", "/en/register"),
+  robots: { index: false, follow: false },
 };
 
 export default function RegisterLayout({ children }: { children: React.ReactNode }) {

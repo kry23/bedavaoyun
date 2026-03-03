@@ -1,5 +1,12 @@
 User-agent: *
 Allow: /
 
+Disallow: /giris
+Disallow: /kayit
+Disallow: /profil
+Disallow: /en/login
+Disallow: /en/register
+Disallow: /en/profile
+
 Sitemap: https://bedava-oyun.com/sitemap.xml
 Sitemap: https://freegames4you.online/sitemap.xml

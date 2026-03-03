@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Profile",
   description: "View your profile and track your game stats.",
   alternates: enAlternates("/profil", "/en/profile"),
+  robots: { index: false, follow: false },
 };
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {

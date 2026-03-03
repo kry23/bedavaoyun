@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Login",
   description: "Log in to your account and save your scores.",
   alternates: enAlternates("/giris", "/en/login"),
+  robots: { index: false, follow: false },
 };
 
 export default function LoginLayout({ children }: { children: React.ReactNode }) {

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Giriş Yap",
   description: "Hesabınıza giriş yapın ve skorlarınızı kaydedin.",
   alternates: trAlternates("/giris", "/en/login"),
+  robots: { index: false, follow: false },
 };
 
 export default function LoginLayout({ children }: { children: React.ReactNode }) {
