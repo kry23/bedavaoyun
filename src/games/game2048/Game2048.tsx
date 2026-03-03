@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { createGame, move } from "./engine";
-import { renderGame } from "./renderer";
-import type { Game2048State, Direction } from "./types";
+import { renderGame, renderAnimatedFrame } from "./renderer";
+import type { Game2048State, Direction, TileMove, MergedCell, SpawnedTile } from "./types";
 import { GameShell } from "@/components/game/GameShell";
 import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
@@ -16,6 +16,7 @@ import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw } from "lucide-react";
 
 const GAME_INFO = gameRegistry.game2048;
+const ANIM_DURATION = 200; // ms
 
 const KEY_MAP: Record<string, Direction> = {
   ArrowUp: "up",
@@ -27,6 +28,16 @@ const KEY_MAP: Record<string, Direction> = {
 export default function Game2048() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<Game2048State>(createGame());
+  const animRef = useRef<{
+    active: boolean;
+    startTime: number;
+    prevGrid: number[][];
+    nextState: Game2048State;
+    tileMoves: TileMove[];
+    mergedCells: MergedCell[];
+    spawnedTile: SpawnedTile | null;
+    rafId: number;
+  } | null>(null);
 
   const [score, setScore] = useState(0);
   const [bestTile, setBestTile] = useState(0);
@@ -45,7 +56,45 @@ export default function Game2048() {
     renderGame(ctx, stateRef.current, canvas.width, theme === "dark");
   }, [theme]);
 
+  const animationLoop = useCallback(() => {
+    const anim = animRef.current;
+    if (!anim || !anim.active) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const elapsed = performance.now() - anim.startTime;
+    const progress = Math.min(1, elapsed / ANIM_DURATION);
+
+    renderAnimatedFrame(
+      ctx,
+      canvas.width,
+      theme === "dark",
+      progress,
+      anim.prevGrid,
+      anim.nextState,
+      anim.tileMoves,
+      anim.mergedCells,
+      anim.spawnedTile
+    );
+
+    if (progress < 1) {
+      anim.rafId = requestAnimationFrame(animationLoop);
+    } else {
+      // Animation complete — render final static state
+      anim.active = false;
+      renderGame(ctx, anim.nextState, canvas.width, theme === "dark");
+    }
+  }, [theme]);
+
   const initGame = useCallback(() => {
+    // Cancel any running animation
+    if (animRef.current?.active) {
+      cancelAnimationFrame(animRef.current.rafId);
+      animRef.current.active = false;
+    }
     stateRef.current = createGame();
     setScore(0);
     setBestTile(0);
@@ -81,21 +130,36 @@ export default function Game2048() {
   const handleMove = useCallback(
     (dir: Direction) => {
       if (gameStatus === "lost") return;
+      // Block input during animation
+      if (animRef.current?.active) return;
 
-      const newState = move(stateRef.current, dir);
-      if (newState === stateRef.current) return; // no change
+      const prevGrid = stateRef.current.grid.map((row) => [...row]);
+      const result = move(stateRef.current, dir);
+      if (!result.moved) return;
 
-      stateRef.current = newState;
-      setScore(newState.score);
-      setBestTile(newState.bestTile);
-      setGameStatus(newState.status === "lost" ? "lost" : "playing");
-      draw();
+      stateRef.current = result.state;
+      setScore(result.state.score);
+      setBestTile(result.state.bestTile);
+      setGameStatus(result.state.status === "lost" ? "lost" : "playing");
 
-      if (newState.status === "lost") {
-        setTimeout(() => setShowModal(true), 300);
+      // Start animation
+      animRef.current = {
+        active: true,
+        startTime: performance.now(),
+        prevGrid,
+        nextState: result.state,
+        tileMoves: result.tileMoves,
+        mergedCells: result.mergedCells,
+        spawnedTile: result.spawnedTile,
+        rafId: 0,
+      };
+      animRef.current.rafId = requestAnimationFrame(animationLoop);
+
+      if (result.state.status === "lost") {
+        setTimeout(() => setShowModal(true), ANIM_DURATION + 300);
       }
     },
-    [draw, gameStatus]
+    [animationLoop, gameStatus]
   );
 
   useKeyboard(

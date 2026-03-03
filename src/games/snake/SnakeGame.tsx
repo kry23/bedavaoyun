@@ -32,6 +32,8 @@ export default function SnakeGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<SnakeState>(createGame());
   const loopRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number>(0);
+  const lastTickTimeRef = useRef<number>(0);
 
   const [score, setScore] = useState(0);
   const [gameStatus, setGameStatus] = useState<"idle" | "playing" | "lost">("idle");
@@ -41,21 +43,41 @@ export default function SnakeGame() {
   const locale = useLocale();
   const gameT = getGameTranslation("snake", locale);
 
-  const draw = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const cellSize = canvas.width / GRID_SIZE;
-    renderGame(ctx, stateRef.current, cellSize, theme === "dark");
-  }, [theme]);
+  const draw = useCallback(
+    (t: number = 1, animTime: number = 0) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      renderGame(ctx, stateRef.current, canvas.width, canvas.height, theme === "dark", t, animTime);
+    },
+    [theme]
+  );
 
   const stopLoop = useCallback(() => {
     if (loopRef.current) {
       clearTimeout(loopRef.current);
       loopRef.current = null;
     }
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    }
   }, []);
+
+  /* ---- Render loop: interpolated smooth animation ---- */
+  const renderLoop = useCallback(() => {
+    const s = stateRef.current;
+    const now = performance.now();
+    const elapsed = now - lastTickTimeRef.current;
+    const progress = Math.min(1, elapsed / s.speed);
+
+    draw(progress, now);
+
+    if (s.status !== "lost") {
+      rafRef.current = requestAnimationFrame(renderLoop);
+    }
+  }, [draw]);
 
   const gameLoop = useCallback(() => {
     const s = stateRef.current;
@@ -64,10 +86,12 @@ export default function SnakeGame() {
     const newState = tick(s);
     stateRef.current = newState;
     setScore(newState.score);
-    draw();
+    lastTickTimeRef.current = performance.now();
 
     if (newState.status === "lost") {
       setGameStatus("lost");
+      // Draw final frame
+      draw(1, performance.now());
       setTimeout(() => setShowModal(true), 300);
       return;
     }
@@ -79,8 +103,11 @@ export default function SnakeGame() {
     if (gameStatus === "playing") return;
     setGameStatus("playing");
     stateRef.current = { ...stateRef.current, status: "playing" };
+    lastTickTimeRef.current = performance.now();
     gameLoop();
-  }, [gameStatus, gameLoop]);
+    // Start render loop
+    rafRef.current = requestAnimationFrame(renderLoop);
+  }, [gameStatus, gameLoop, renderLoop]);
 
   const initGame = useCallback(() => {
     stopLoop();
@@ -88,7 +115,7 @@ export default function SnakeGame() {
     setScore(0);
     setGameStatus("idle");
     setShowModal(false);
-    draw();
+    draw(1, performance.now());
   }, [draw, stopLoop]);
 
   useEffect(() => {
@@ -98,7 +125,7 @@ export default function SnakeGame() {
     const size = Math.min(parent.clientWidth, 500);
     canvas.width = size;
     canvas.height = size;
-    draw();
+    draw(1, performance.now());
   }, [draw]);
 
   useEffect(() => {
@@ -109,7 +136,7 @@ export default function SnakeGame() {
       const size = Math.min(parent.clientWidth, 500);
       canvas.width = size;
       canvas.height = size;
-      draw();
+      draw(1, performance.now());
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -160,7 +187,7 @@ export default function SnakeGame() {
         )}
         <canvas
           ref={canvasRef}
-          className="touch-none mx-auto block rounded-lg border border-[hsl(var(--border))]"
+          className="touch-none mx-auto block rounded-lg"
         />
       </div>
 

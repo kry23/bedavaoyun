@@ -1,20 +1,27 @@
 import type { LetterResult, LetterState, WordleState } from "./types";
 import { MAX_ATTEMPTS, WORD_LENGTH } from "./types";
 import { VALID_WORDS } from "./words";
+import { VALID_WORDS_EN } from "./words-en";
 
-export function getDailyWord(): string {
-  // Date-based seed: same word for everyone on the same day
+export type WordleLocale = "tr" | "en";
+
+function getWordList(locale: WordleLocale): string[] {
+  return locale === "en" ? VALID_WORDS_EN : VALID_WORDS;
+}
+
+export function getDailyWord(locale: WordleLocale = "tr"): string {
+  const words = getWordList(locale);
   const now = new Date();
   const start = new Date(2025, 0, 1); // Jan 1, 2025
   const dayIndex = Math.floor(
     (now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
   );
-  return VALID_WORDS[dayIndex % VALID_WORDS.length];
+  return words[dayIndex % words.length];
 }
 
-export function createGame(): WordleState {
+export function createGame(locale: WordleLocale = "tr"): WordleState {
   return {
-    target: getDailyWord(),
+    target: getDailyWord(locale),
     guesses: [],
     currentGuess: "",
     attempt: 0,
@@ -23,8 +30,9 @@ export function createGame(): WordleState {
   };
 }
 
-export function createRandomGame(): WordleState {
-  const target = VALID_WORDS[Math.floor(Math.random() * VALID_WORDS.length)];
+export function createRandomGame(locale: WordleLocale = "tr"): WordleState {
+  const words = getWordList(locale);
+  const target = words[Math.floor(Math.random() * words.length)];
   return {
     target,
     guesses: [],
@@ -113,6 +121,7 @@ export function submitGuess(state: WordleState): WordleState {
   };
 }
 
-export function isValidWord(word: string): boolean {
-  return VALID_WORDS.includes(word.toUpperCase());
+export function isValidWord(word: string, locale: WordleLocale = "tr"): boolean {
+  const words = getWordList(locale);
+  return words.includes(word.toUpperCase());
 }

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { createGame, revealCell, toggleFlag } from "./engine";
-import { renderBoard, getCellSize, getCellFromClick } from "./renderer";
+import { renderBoard, getCellSize, getCellFromClick, getBoardPixelSize } from "./renderer";
 import { DIFFICULTIES, type Difficulty, type MinesweeperState } from "./types";
 import { GameShell } from "@/components/game/GameShell";
 import { GameOverModal } from "@/components/game/GameOverModal";
@@ -21,6 +21,8 @@ export default function MinesweeperGame() {
   const stateRef = useRef<MinesweeperState>(createGame(9, 9, 10));
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const longPressTriggered = useRef(false);
+  const hoverCellRef = useRef<{ row: number; col: number } | null>(null);
+  const pressedCellRef = useRef<{ row: number; col: number } | null>(null);
 
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [flagCount, setFlagCount] = useState(0);
@@ -39,7 +41,7 @@ export default function MinesweeperGame() {
     if (!ctx) return;
     const s = stateRef.current;
     const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
-    renderBoard(ctx, s, cellSize, theme === "dark");
+    renderBoard(ctx, s, cellSize, theme === "dark", hoverCellRef.current, pressedCellRef.current);
   }, [theme]);
 
   const initGame = useCallback(
@@ -50,6 +52,8 @@ export default function MinesweeperGame() {
       setFlagCount(0);
       setGameStatus("idle");
       setShowModal(false);
+      hoverCellRef.current = null;
+      pressedCellRef.current = null;
       reset();
 
       const canvas = canvasRef.current;
@@ -58,8 +62,9 @@ export default function MinesweeperGame() {
         const maxWidth = Math.min(parent.clientWidth, 700);
         const MIN_CELL = 28;
         const cellSize = Math.max(MIN_CELL, Math.floor(maxWidth / config.width));
-        canvas.width = cellSize * config.width;
-        canvas.height = cellSize * config.height;
+        const { w, h } = getBoardPixelSize(config.width, config.height, cellSize);
+        canvas.width = w;
+        canvas.height = h;
       }
 
       requestAnimationFrame(draw);
@@ -85,8 +90,9 @@ export default function MinesweeperGame() {
       const maxWidth = Math.min(parent.clientWidth, 700);
       const MIN_CELL = 28;
       const cellSize = Math.max(MIN_CELL, Math.floor(maxWidth / config.width));
-      canvas.width = cellSize * config.width;
-      canvas.height = cellSize * config.height;
+      const { w, h } = getBoardPixelSize(config.width, config.height, cellSize);
+      canvas.width = w;
+      canvas.height = h;
       draw();
     };
     window.addEventListener("resize", handleResize);
@@ -123,16 +129,77 @@ export default function MinesweeperGame() {
     [draw, start, stop]
   );
 
+  /* ---- Hover tracking ---- */
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+      const s = stateRef.current;
+      const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
+      const { row, col } = getCellFromClick(x, y, cellSize);
+
+      const prev = hoverCellRef.current;
+      if (!prev || prev.row !== row || prev.col !== col) {
+        hoverCellRef.current = { row, col };
+        draw();
+      }
+    },
+    [draw]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    hoverCellRef.current = null;
+    pressedCellRef.current = null;
+    draw();
+  }, [draw]);
+
+  /* ---- Press tracking ---- */
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      if (e.button !== 0) return; // only left button
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+      const s = stateRef.current;
+      const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
+      const { row, col } = getCellFromClick(x, y, cellSize);
+
+      // Only show pressed state for hidden cells
+      if (s.grid[row]?.[col]?.state === "hidden") {
+        pressedCellRef.current = { row, col };
+        draw();
+      }
+    },
+    [draw]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    pressedCellRef.current = null;
+    draw();
+  }, [draw]);
+
   const handleCanvasClick = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
       const s = stateRef.current;
       const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
       const { row, col } = getCellFromClick(x, y, cellSize);
+      pressedCellRef.current = null;
       handleAction(row, col, false);
     },
     [handleAction]
@@ -144,8 +211,10 @@ export default function MinesweeperGame() {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
       const s = stateRef.current;
       const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
       const { row, col } = getCellFromClick(x, y, cellSize);
@@ -162,18 +231,27 @@ export default function MinesweeperGame() {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (touch.clientX - rect.left) * scaleX;
+      const y = (touch.clientY - rect.top) * scaleY;
+      const s = stateRef.current;
+      const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
+      const { row, col } = getCellFromClick(x, y, cellSize);
+
+      // Show pressed state on touch
+      if (s.grid[row]?.[col]?.state === "hidden") {
+        pressedCellRef.current = { row, col };
+        draw();
+      }
 
       longPressTimer.current = setTimeout(() => {
         longPressTriggered.current = true;
-        const s = stateRef.current;
-        const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
-        const { row, col } = getCellFromClick(x, y, cellSize);
+        pressedCellRef.current = null;
         handleAction(row, col, true);
       }, 500);
     },
-    [handleAction]
+    [handleAction, draw]
   );
 
   const handleTouchEnd = useCallback(
@@ -182,8 +260,12 @@ export default function MinesweeperGame() {
         clearTimeout(longPressTimer.current);
         longPressTimer.current = null;
       }
+
+      pressedCellRef.current = null;
+
       if (longPressTriggered.current) {
         longPressTriggered.current = false;
+        draw();
         return;
       }
 
@@ -191,14 +273,16 @@ export default function MinesweeperGame() {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const x = (touch.clientX - rect.left) * scaleX;
+      const y = (touch.clientY - rect.top) * scaleY;
       const s = stateRef.current;
       const cellSize = getCellSize(canvas.width, canvas.height, s.width, s.height);
       const { row, col } = getCellFromClick(x, y, cellSize);
       handleAction(row, col, false);
     },
-    [handleAction]
+    [handleAction, draw]
   );
 
   const config = DIFFICULTIES[difficulty];
@@ -235,6 +319,10 @@ export default function MinesweeperGame() {
           ref={canvasRef}
           onClick={handleCanvasClick}
           onContextMenu={handleContextMenu}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           className="touch-none mx-auto block cursor-pointer"

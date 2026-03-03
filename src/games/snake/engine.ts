@@ -23,12 +23,14 @@ export function createGame(): SnakeState {
   return {
     gridSize: GRID_SIZE,
     snake,
+    prevSnake: snake.map((p) => ({ ...p })),
     food: spawnFood(snake, GRID_SIZE),
     direction: "right",
     nextDirection: "right",
     status: "idle",
     score: 0,
     speed: BASE_SPEED,
+    ateFood: false,
   };
 }
 
@@ -76,23 +78,28 @@ export function tick(state: SnakeState): SnakeState {
     newHead.y < 0 ||
     newHead.y >= state.gridSize
   ) {
-    return { ...state, status: "lost", direction };
+    return { ...state, status: "lost", direction, ateFood: false };
   }
 
   // Self collision
   if (state.snake.some((p) => p.x === newHead.x && p.y === newHead.y)) {
-    return { ...state, status: "lost", direction };
+    return { ...state, status: "lost", direction, ateFood: false };
   }
+
+  // Save previous positions for interpolation
+  const prevSnake = state.snake.map((p) => ({ ...p }));
 
   const newSnake = [newHead, ...state.snake];
   let newScore = state.score;
   let newFood = state.food;
   let newSpeed = state.speed;
+  let ateFood = false;
 
   // Eat food
   if (newHead.x === state.food.x && newHead.y === state.food.y) {
     newScore++;
     newFood = spawnFood(newSnake, state.gridSize);
+    ateFood = true;
 
     if (newScore % SPEED_INCREASE_INTERVAL === 0) {
       newSpeed = Math.max(MIN_SPEED, newSpeed - SPEED_DECREASE);
@@ -104,10 +111,12 @@ export function tick(state: SnakeState): SnakeState {
   return {
     ...state,
     snake: newSnake,
+    prevSnake,
     food: newFood,
     direction,
     score: newScore,
     speed: newSpeed,
     status: "playing",
+    ateFood,
   };
 }

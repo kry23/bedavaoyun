@@ -10,12 +10,14 @@ export type GameStatus = "idle" | "playing" | "won" | "lost";
 export interface SnakeState {
   gridSize: number;
   snake: Point[];
+  prevSnake: Point[]; // previous tick positions for interpolation
   food: Point;
   direction: Direction;
   nextDirection: Direction;
   status: GameStatus;
   score: number;
   speed: number; // ms per tick
+  ateFood: boolean; // true if food was eaten this tick (for animation)
 }
 
 export const GRID_SIZE = 20;
