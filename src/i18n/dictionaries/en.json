@@ -235,7 +235,10 @@
     "catGeneral": "General",
     "catSuggestion": "Game Suggestion",
     "catBug": "Bug Report",
-    "catImprovement": "Improvement"
+    "catImprovement": "Improvement",
+    "nudgeTitle": "How's it going?",
+    "nudgeMessage": "We'd love to hear your thoughts about the games!",
+    "nudgeAction": "Send feedback"
   },
   "footer": {
     "copyright": "All rights reserved."

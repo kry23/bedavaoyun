@@ -8,6 +8,7 @@ import { AdBanner } from "@/components/ads/AdBanner";
 import { useTranslation, useLocale } from "@/i18n/useTranslation";
 import { getLocalizedPath } from "@/i18n/navigation";
 import { getGameTranslation } from "@/i18n/game-translations";
+import { FeedbackNudge } from "@/components/game/FeedbackNudge";
 
 interface GameShellProps {
   game: GameInfo;
@@ -53,6 +54,8 @@ export function GameShell({ game, children, controls, stats }: GameShellProps) {
 
       {/* Ad below game */}
       <AdBanner slot="GAME_BOTTOM_AD" format="horizontal" className="mt-4 w-full max-w-[600px]" />
+
+      <FeedbackNudge />
     </div>
   );
 }

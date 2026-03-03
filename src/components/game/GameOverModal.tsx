@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Trophy, RotateCcw } from "lucide-react";
 import { SITE_URL } from "@/utils/constants";
+import { recordGamePlayed } from "@/components/game/FeedbackNudge";
 import { useTranslation, useLocale } from "@/i18n/useTranslation";
 import { getLocalizedPath } from "@/i18n/navigation";
 
@@ -39,6 +41,10 @@ export function GameOverModal({
   const { user } = useAuth();
   const t = useTranslation();
   const locale = useLocale();
+
+  useEffect(() => {
+    if (open) recordGamePlayed();
+  }, [open]);
 
   const shareText = gameName
     ? t.gameOver.shareText

@@ -235,7 +235,10 @@
     "catGeneral": "Genel",
     "catSuggestion": "Oyun Önerisi",
     "catBug": "Hata Bildirimi",
-    "catImprovement": "İyileştirme"
+    "catImprovement": "İyileştirme",
+    "nudgeTitle": "Nasıl gidiyor?",
+    "nudgeMessage": "Oyunlar hakkında düşüncelerinizi merak ediyoruz!",
+    "nudgeAction": "Geri bildirim gönder"
   },
   "footer": {
     "copyright": "Tüm hakları saklıdır."
