@@ -69,6 +69,10 @@ const gameComponents: Record<string, ReturnType<typeof dynamic>> = {
     () => import("@/games/watermelon/WatermelonGame"),
     { loading: GameSkeleton, ssr: false }
   ),
+  blockbreaker: dynamic(
+    () => import("@/games/blockbreaker/BlockBreakerGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

@@ -203,6 +203,14 @@
     "instructions": "Tıklayarak meyve bırakın. Aynı meyveler birleşir!",
     "next": "Sonraki"
   },
+  "blockbreaker": {
+    "instructions": "Fareyi hareket ettir veya ok tuşlarını kullan. Tıkla veya Boşluk ile topu fırlat.",
+    "level": "Seviye:",
+    "lives": "Can:",
+    "pause": "Duraklat",
+    "continue": "Devam",
+    "restartAll": "Baştan Başla"
+  },
   "footer": {
     "copyright": "Tüm hakları saklıdır."
   },

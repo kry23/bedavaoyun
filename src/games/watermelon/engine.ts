@@ -49,6 +49,7 @@ export class WatermelonEngine {
   world: Matter.World;
   fruits: Matter.Body[] = [];
   score = 0;
+  maxFruitIndex = 0;
   currentFruitIndex: number;
   nextFruitIndex: number;
   dropX: number;
@@ -164,6 +165,7 @@ export class WatermelonEngine {
       this.fruits.push(newBody);
 
       this.score += newFruit.points;
+      if (newIndex > this.maxFruitIndex) this.maxFruitIndex = newIndex;
       this.callbacks.onScoreChange(this.score);
       this.callbacks.onMerge?.(midX, midY, newIndex);
     }
@@ -245,6 +247,7 @@ export class WatermelonEngine {
     return {
       status: this.gameOver ? "lost" : this.fruits.length > 0 ? "playing" : "idle",
       score: this.score,
+      maxFruitIndex: this.maxFruitIndex,
       currentFruitIndex: this.currentFruitIndex,
       nextFruitIndex: this.nextFruitIndex,
       dropX: this.dropX,

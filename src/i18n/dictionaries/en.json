@@ -203,6 +203,14 @@
     "instructions": "Click to drop fruit. Matching fruits merge!",
     "next": "Next"
   },
+  "blockbreaker": {
+    "instructions": "Move mouse or arrow keys. Click or Space to launch ball.",
+    "level": "Level:",
+    "lives": "Lives:",
+    "pause": "Pause",
+    "continue": "Continue",
+    "restartAll": "Restart All"
+  },
   "footer": {
     "copyright": "All rights reserved."
   },

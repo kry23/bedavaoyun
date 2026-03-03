@@ -515,6 +515,48 @@ const guidesTr: GuideMap = {
       },
     ],
   },
+  blockbreaker: {
+    howToPlayTitle: "Tuğla Kırma Nasıl Oynanır?",
+    steps: [
+      {
+        title: "Paddle'ı hareket ettirin",
+        description:
+          "Fareyi sağa sola hareket ettirerek veya ok tuşlarını kullanarak alttaki paddle'ı kontrol edin. Top paddle'a çarparak sekmeli.",
+      },
+      {
+        title: "Topu fırlatın",
+        description:
+          "Tıklayarak veya Boşluk tuşuna basarak topu fırlatın. Top yukarı doğru hareket edip tuğlaları kırmaya başlayacak.",
+      },
+      {
+        title: "Tuğlaları kırın",
+        description:
+          "Top tuğlalara çarpınca tuğlalar kırılır. Bazı tuğlalar 2 vuruş gerektirir (çizgili olanlar), TNT tuğlaları çevresindeki tuğlaları da patlatır.",
+      },
+      {
+        title: "Güçlendirmeleri toplayın",
+        description:
+          "Özel tuğlalar (+) kırılınca güçlendirmeler düşer. Bunları paddle ile yakalayarak geniş paddle, çoklu top, ateş topu, lazer ve kalkan kazanabilirsiniz.",
+      },
+    ],
+    faq: [
+      {
+        question: "Kaç canım var?",
+        answer:
+          "3 canla başlarsınız. Top ekranın altından çıkarsa bir can kaybedersiniz. Kalp tuğlalarını kırarak ekstra can kazanabilirsiniz.",
+      },
+      {
+        question: "TNT tuğlaları ne işe yarar?",
+        answer:
+          "TNT tuğlaları patladığında çevresindeki tüm komşu tuğlaları da yok eder. Zincirleme patlamalar yapabilirsiniz!",
+      },
+      {
+        question: "Güçlendirmeler ne kadar sürer?",
+        answer:
+          "Her güçlendirme 15 saniye sürer. Aktif güçlendirmeler paddle üzerinde gösterilir.",
+      },
+    ],
+  },
 };
 
 const guidesEn: GuideMap = {
@@ -1013,6 +1055,48 @@ const guidesEn: GuideMap = {
         question: "How to play on mobile?",
         answer:
           "Drag your finger across the screen to position the fruit, then tap to drop it.",
+      },
+    ],
+  },
+  blockbreaker: {
+    howToPlayTitle: "How to Play Block Breaker",
+    steps: [
+      {
+        title: "Move the paddle",
+        description:
+          "Move your mouse left and right or use arrow keys to control the paddle at the bottom. The ball bounces off the paddle.",
+      },
+      {
+        title: "Launch the ball",
+        description:
+          "Click or press Space to launch the ball. It will fly upward and start breaking blocks.",
+      },
+      {
+        title: "Break the blocks",
+        description:
+          "When the ball hits blocks, they break. Some blocks need 2 hits (hatched pattern), TNT blocks explode and destroy nearby blocks.",
+      },
+      {
+        title: "Collect power-ups",
+        description:
+          "Special blocks (+) drop power-ups when destroyed. Catch them with your paddle to get wide paddle, multiball, fireball, laser, or shield abilities.",
+      },
+    ],
+    faq: [
+      {
+        question: "How many lives do I have?",
+        answer:
+          "You start with 3 lives. You lose a life when the ball falls below the paddle. Heart blocks can restore extra lives.",
+      },
+      {
+        question: "What do TNT blocks do?",
+        answer:
+          "TNT blocks explode when destroyed, taking out all neighboring blocks too. Chain reactions are possible!",
+      },
+      {
+        question: "How long do power-ups last?",
+        answer:
+          "Each power-up lasts 15 seconds. Active power-ups are indicated on the paddle.",
       },
     ],
   },

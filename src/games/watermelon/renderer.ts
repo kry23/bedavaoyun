@@ -21,25 +21,25 @@ interface Theme {
 }
 
 const LIGHT: Theme = {
-  bg: "#FDF6E3",
-  containerBg: "#FFF8E7",
-  containerBorder: "#D4A574",
-  dangerLine: "#FF4444",
-  dropGuide: "rgba(0,0,0,0.12)",
-  text: "#5D4037",
-  textMuted: "#8D6E63",
-  panelBg: "#F5E6D0",
+  bg: "#E8F5A3",
+  containerBg: "#D4E157",
+  containerBorder: "#A0B840",
+  dangerLine: "#FF5252",
+  dropGuide: "rgba(0,0,0,0.10)",
+  text: "#33691E",
+  textMuted: "#689F38",
+  panelBg: "#C5E1A5",
 };
 
 const DARK: Theme = {
-  bg: "#1a1510",
-  containerBg: "#2C2418",
-  containerBorder: "#6D5A3A",
+  bg: "#1B2A1B",
+  containerBg: "#2A3A2A",
+  containerBorder: "#4A6A3A",
   dangerLine: "#FF6666",
   dropGuide: "rgba(255,255,255,0.10)",
-  text: "#D4A574",
-  textMuted: "#A1887F",
-  panelBg: "#3D3226",
+  text: "#A5D6A7",
+  textMuted: "#81C784",
+  panelBg: "#2E4A2E",
 };
 
 function drawFruit(
@@ -48,7 +48,8 @@ function drawFruit(
   y: number,
   def: FruitDef,
   scale: number,
-  alpha = 1
+  alpha = 1,
+  angle = 0
 ): void {
   const r = def.radius * scale;
 
@@ -57,60 +58,252 @@ function drawFruit(
 
   // Drop shadow
   ctx.shadowColor = "rgba(0,0,0,0.25)";
-  ctx.shadowBlur = 8 * scale;
+  ctx.shadowBlur = 6 * scale;
   ctx.shadowOffsetY = 3 * scale;
 
-  // Dark border ring
+  // Thick colored border — bold cartoon/sticker look
+  const borderW = Math.max(2.5, r * 0.08);
   ctx.fillStyle = def.colorDark;
   ctx.beginPath();
-  ctx.arc(x, y, r + 1.5 * scale, 0, Math.PI * 2);
+  ctx.arc(x, y, r + borderW, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.shadowColor = "transparent";
 
-  // Main body — two-stop radial from bright center to dark edge
+  // Main body — simple, clean 3-stop radial gradient
   const bodyGrad = ctx.createRadialGradient(
-    x - r * 0.2, y - r * 0.25, r * 0.1,
+    x - r * 0.2, y - r * 0.25, r * 0.05,
     x, y, r
   );
-  bodyGrad.addColorStop(0, lightenColor(def.color, 50));
-  bodyGrad.addColorStop(0.55, def.color);
+  bodyGrad.addColorStop(0, lightenColor(def.color, 80));
+  bodyGrad.addColorStop(0.6, def.color);
   bodyGrad.addColorStop(1, def.colorDark);
   ctx.fillStyle = bodyGrad;
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fill();
 
-  // Rim light — subtle lighter edge on top half for 3D depth
+  // ── Rotated elements (texture, highlight, leaf, face) ──
   ctx.save();
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI * 2);
-  ctx.clip();
-  const rimGrad = ctx.createLinearGradient(x, y - r, x, y + r);
-  rimGrad.addColorStop(0, "rgba(255,255,255,0.18)");
-  rimGrad.addColorStop(0.45, "rgba(255,255,255,0)");
-  rimGrad.addColorStop(0.55, "rgba(0,0,0,0)");
-  rimGrad.addColorStop(1, "rgba(0,0,0,0.1)");
-  ctx.fillStyle = rimGrad;
-  ctx.fillRect(x - r, y - r, r * 2, r * 2);
-  ctx.restore();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
 
-  // Specular highlight — small, crisp, offset top-left
-  const hlX = x - r * 0.28;
-  const hlY = y - r * 0.32;
-  const hlR = r * 0.35;
+  // Fruit-specific texture
+  drawFruitTexture(ctx, 0, 0, r, def.index);
+
+  // Specular highlight — small, crisp, upper-left (candy style)
+  const hlX = -r * 0.28;
+  const hlY = -r * 0.3;
+  const hlR = r * 0.22;
   const hlGrad = ctx.createRadialGradient(hlX, hlY, 0, hlX, hlY, hlR);
-  hlGrad.addColorStop(0, "rgba(255,255,255,0.75)");
-  hlGrad.addColorStop(0.6, "rgba(255,255,255,0.2)");
+  hlGrad.addColorStop(0, "rgba(255,255,255,0.92)");
   hlGrad.addColorStop(1, "rgba(255,255,255,0)");
   ctx.fillStyle = hlGrad;
   ctx.beginPath();
   ctx.arc(hlX, hlY, hlR, 0, Math.PI * 2);
   ctx.fill();
 
-  // ── Kawaii face (unique per fruit) ──
+  // Leaf on top
+  if (r >= 6) {
+    drawLeaf(ctx, 0, -r, r);
+  }
+
+  // Kawaii face
   if (r >= 8) {
-    drawKawaiFace(ctx, x, y, r, def.index);
+    drawKawaiFace(ctx, 0, 0, r, def.index);
+  }
+
+  ctx.restore(); // end rotation
+  ctx.restore(); // end alpha/shadow
+}
+
+/** Draw an organic teardrop leaf on top of the fruit */
+function drawLeaf(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  topY: number,
+  r: number
+): void {
+  const stemH = r * 0.12;
+  const leafSize = r * 0.3;
+
+  ctx.save();
+
+  // Stem
+  ctx.strokeStyle = "#6D4C41";
+  ctx.lineWidth = Math.max(1.5, r * 0.06);
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(x, topY + r * 0.02);
+  ctx.lineTo(x, topY - stemH);
+  ctx.stroke();
+
+  // Leaf — organic teardrop via bezier curves
+  ctx.fillStyle = "#66BB6A";
+  ctx.beginPath();
+  ctx.moveTo(x, topY - stemH);
+  ctx.bezierCurveTo(
+    x - leafSize * 0.6, topY - stemH - leafSize * 0.3,
+    x - leafSize * 0.2, topY - stemH - leafSize * 0.9,
+    x + leafSize * 0.5, topY - stemH - leafSize * 0.4
+  );
+  ctx.bezierCurveTo(
+    x + leafSize * 0.3, topY - stemH - leafSize * 0.1,
+    x + leafSize * 0.1, topY - stemH,
+    x, topY - stemH
+  );
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/** Draw fruit-specific surface texture */
+function drawFruitTexture(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  r: number,
+  fruitIndex: number
+): void {
+  ctx.save();
+  // Clip to fruit circle
+  ctx.beginPath();
+  ctx.arc(x, y, r * 0.92, 0, Math.PI * 2);
+  ctx.clip();
+
+  switch (fruitIndex) {
+    case 0: {
+      // Cherry — small scattered dots
+      ctx.fillStyle = "rgba(255,255,255,0.15)";
+      const dots0 = [[0.2, -0.1], [-0.3, 0.2], [0.1, 0.35], [-0.15, -0.3], [0.35, 0.15]];
+      for (const [dx, dy] of dots0) {
+        ctx.beginPath();
+        ctx.arc(x + r * dx, y + r * dy, r * 0.06, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      break;
+    }
+    case 1: {
+      // Strawberry — seed dots
+      ctx.fillStyle = "rgba(255,255,200,0.4)";
+      const seeds = [
+        [-0.25, -0.15], [0.0, -0.25], [0.25, -0.1],
+        [-0.35, 0.1], [-0.1, 0.05], [0.15, 0.1], [0.35, 0.05],
+        [-0.2, 0.3], [0.05, 0.28], [0.28, 0.25],
+        [-0.1, 0.48], [0.15, 0.45],
+      ];
+      for (const [dx, dy] of seeds) {
+        ctx.beginPath();
+        ctx.ellipse(x + r * dx, y + r * dy, r * 0.035, r * 0.05, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      break;
+    }
+    case 2: {
+      // Grape — subtle sheen stripes
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = r * 0.08;
+      for (let i = -2; i <= 2; i++) {
+        ctx.beginPath();
+        ctx.arc(x + r * 0.6, y, r * (0.5 + i * 0.2), Math.PI * 0.6, Math.PI * 1.4);
+        ctx.stroke();
+      }
+      break;
+    }
+    case 3: {
+      // Orange — dimpled texture (subtle bumps)
+      ctx.fillStyle = "rgba(255,255,255,0.06)";
+      for (let i = 0; i < 20; i++) {
+        const angle = (Math.PI * 2 * i) / 20 + (i % 2) * 0.15;
+        const dist = r * (0.25 + (i % 3) * 0.2);
+        ctx.beginPath();
+        ctx.arc(x + Math.cos(angle) * dist, y + Math.sin(angle) * dist, r * 0.05, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      break;
+    }
+    case 4: {
+      // Apple — subtle vertical sheen lines
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = r * 0.04;
+      for (let i = -3; i <= 3; i++) {
+        const cx = x + i * r * 0.15;
+        ctx.beginPath();
+        ctx.moveTo(cx, y - r * 0.7);
+        ctx.quadraticCurveTo(cx + i * r * 0.05, y, cx, y + r * 0.7);
+        ctx.stroke();
+      }
+      break;
+    }
+    case 5: {
+      // Pear — speckles
+      ctx.fillStyle = "rgba(100,80,0,0.08)";
+      for (let i = 0; i < 15; i++) {
+        const angle = Math.PI * 2 * i / 15;
+        const dist = r * (0.3 + (i % 4) * 0.15);
+        ctx.beginPath();
+        ctx.arc(x + Math.cos(angle) * dist, y + Math.sin(angle) * dist, r * 0.025, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      break;
+    }
+    case 6: {
+      // Peach — soft blush area
+      const blush = ctx.createRadialGradient(x - r * 0.1, y + r * 0.1, 0, x - r * 0.1, y + r * 0.1, r * 0.6);
+      blush.addColorStop(0, "rgba(255,100,100,0.12)");
+      blush.addColorStop(1, "rgba(255,100,100,0)");
+      ctx.fillStyle = blush;
+      ctx.fillRect(x - r, y - r, r * 2, r * 2);
+      break;
+    }
+    case 7: {
+      // Pineapple — cross-hatch diamond pattern
+      ctx.strokeStyle = "rgba(180,120,0,0.15)";
+      ctx.lineWidth = r * 0.025;
+      for (let i = -4; i <= 4; i++) {
+        const off = i * r * 0.25;
+        ctx.beginPath();
+        ctx.moveTo(x + off - r, y - r);
+        ctx.lineTo(x + off + r, y + r);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x + off + r, y - r);
+        ctx.lineTo(x + off - r, y + r);
+        ctx.stroke();
+      }
+      break;
+    }
+    case 8: {
+      // Melon — curved rind lines
+      ctx.strokeStyle = "rgba(255,255,255,0.1)";
+      ctx.lineWidth = r * 0.03;
+      for (let i = 0; i < 8; i++) {
+        const angle = (Math.PI * 2 * i) / 8;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(
+          x + Math.cos(angle + 0.2) * r * 0.7,
+          y + Math.sin(angle + 0.2) * r * 0.7,
+          x + Math.cos(angle) * r * 0.9,
+          y + Math.sin(angle) * r * 0.9
+        );
+        ctx.stroke();
+      }
+      break;
+    }
+    case 9: {
+      // Watermelon — stripes
+      ctx.strokeStyle = "rgba(0,80,0,0.15)";
+      ctx.lineWidth = r * 0.08;
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI * 2 * i) / 6;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(angle) * r * 0.1, y + Math.sin(angle) * r * 0.1);
+        ctx.lineTo(x + Math.cos(angle) * r * 0.85, y + Math.sin(angle) * r * 0.85);
+        ctx.stroke();
+      }
+      break;
+    }
   }
 
   ctx.restore();
@@ -129,7 +322,7 @@ function drawKawaiFace(
   r: number,
   fruitIndex: number
 ): void {
-  const eyeR = Math.max(1.5, r * 0.1);
+  const eyeR = Math.max(1.8, r * 0.13);
   const sp = r * 0.28; // eye spacing
   const ey = y - r * 0.08; // eye Y
   const lw = Math.max(1, r * 0.04);
@@ -138,10 +331,10 @@ function drawKawaiFace(
 
   // Helper: standard round eyes
   function drawRoundEyes(wink: "left" | "right" | "none" = "none") {
-    ctx.fillStyle = "#2d1b00";
+    ctx.fillStyle = "#5D3A1A";
     if (wink === "left") {
       // left eye is a wink line
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw * 1.5;
       ctx.beginPath();
       ctx.arc(x - sp, ey, eyeR * 0.8, Math.PI * 0.1, Math.PI * 0.9);
@@ -156,9 +349,9 @@ function drawKawaiFace(
       ctx.arc(x - sp + eyeR * 0.3, ey - eyeR * 0.35, eyeR * 0.35, 0, Math.PI * 2);
       ctx.fill();
     }
-    ctx.fillStyle = "#2d1b00";
+    ctx.fillStyle = "#5D3A1A";
     if (wink === "right") {
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw * 1.5;
       ctx.beginPath();
       ctx.arc(x + sp, ey, eyeR * 0.8, Math.PI * 0.1, Math.PI * 0.9);
@@ -191,7 +384,7 @@ function drawKawaiFace(
   function drawSmile(width = 0.22, bigness = 0.7) {
     const mY = y + r * 0.18;
     const mW = r * width;
-    ctx.strokeStyle = "#2d1b00";
+    ctx.strokeStyle = "#5D3A1A";
     ctx.lineWidth = lw;
     ctx.beginPath();
     ctx.arc(x, mY - r * 0.05, mW, Math.PI * (0.5 - bigness / 2), Math.PI * (0.5 + bigness / 2));
@@ -201,7 +394,7 @@ function drawKawaiFace(
   switch (fruitIndex) {
     case 0: {
       // Cherry — shy: small eyes looking down, tiny blush, small "o" mouth
-      ctx.fillStyle = "#2d1b00";
+      ctx.fillStyle = "#5D3A1A";
       ctx.beginPath();
       ctx.ellipse(x - sp * 0.8, ey + eyeR * 0.3, eyeR * 0.6, eyeR * 0.5, 0, 0, Math.PI * 2);
       ctx.fill();
@@ -210,7 +403,7 @@ function drawKawaiFace(
       ctx.fill();
       drawBlush();
       // tiny "o" mouth
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw;
       ctx.beginPath();
       ctx.arc(x, y + r * 0.2, r * 0.08, 0, Math.PI * 2);
@@ -226,7 +419,7 @@ function drawKawaiFace(
     }
     case 2: {
       // Grape — sleepy: half-closed eyes (arcs), relaxed smile
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw * 1.8;
       ctx.beginPath();
       ctx.arc(x - sp, ey, eyeR, Math.PI * 1.1, Math.PI * 1.9);
@@ -240,7 +433,7 @@ function drawKawaiFace(
     }
     case 3: {
       // Orange — surprised: big round eyes, "O" mouth
-      ctx.fillStyle = "#2d1b00";
+      ctx.fillStyle = "#5D3A1A";
       ctx.beginPath();
       ctx.arc(x - sp, ey, eyeR * 1.15, 0, Math.PI * 2);
       ctx.fill();
@@ -248,7 +441,7 @@ function drawKawaiFace(
       ctx.beginPath();
       ctx.arc(x - sp + eyeR * 0.25, ey - eyeR * 0.3, eyeR * 0.45, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = "#2d1b00";
+      ctx.fillStyle = "#5D3A1A";
       ctx.beginPath();
       ctx.arc(x + sp, ey, eyeR * 1.15, 0, Math.PI * 2);
       ctx.fill();
@@ -257,7 +450,7 @@ function drawKawaiFace(
       ctx.arc(x + sp + eyeR * 0.25, ey - eyeR * 0.3, eyeR * 0.45, 0, Math.PI * 2);
       ctx.fill();
       // "O" mouth
-      ctx.fillStyle = "#2d1b00";
+      ctx.fillStyle = "#5D3A1A";
       ctx.beginPath();
       ctx.ellipse(x, y + r * 0.22, r * 0.1, r * 0.12, 0, 0, Math.PI * 2);
       ctx.fill();
@@ -269,7 +462,7 @@ function drawKawaiFace(
       drawBlush();
       // cheeky smile tilted
       const mY = y + r * 0.18;
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw;
       ctx.beginPath();
       ctx.arc(x + r * 0.03, mY - r * 0.05, r * 0.24, Math.PI * 0.1, Math.PI * 0.8);
@@ -283,7 +476,7 @@ function drawKawaiFace(
       // open smile
       const mY5 = y + r * 0.16;
       const mW5 = r * 0.2;
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw;
       ctx.beginPath();
       ctx.arc(x, mY5, mW5, Math.PI * 0.05, Math.PI * 0.95);
@@ -315,7 +508,7 @@ function drawKawaiFace(
     }
     case 7: {
       // Pineapple — cool: flat line eyes (confident), smirk
-      ctx.strokeStyle = "#2d1b00";
+      ctx.strokeStyle = "#5D3A1A";
       ctx.lineWidth = lw * 2;
       // flat confident eyes
       ctx.beginPath();
@@ -344,7 +537,7 @@ function drawKawaiFace(
       // big grin
       const mY8 = y + r * 0.15;
       const mW8 = r * 0.28;
-      ctx.fillStyle = "#2d1b00";
+      ctx.fillStyle = "#5D3A1A";
       ctx.beginPath();
       ctx.arc(x, mY8, mW8, 0, Math.PI);
       ctx.fill();
@@ -360,7 +553,7 @@ function drawKawaiFace(
       // huge grin
       const mY9 = y + r * 0.13;
       const mW9 = r * 0.32;
-      ctx.fillStyle = "#2d1b00";
+      ctx.fillStyle = "#5D3A1A";
       ctx.beginPath();
       ctx.arc(x, mY9, mW9, 0, Math.PI);
       ctx.fill();
@@ -416,7 +609,7 @@ export function renderGame(
   ctx: CanvasRenderingContext2D,
   canvasW: number,
   canvasH: number,
-  fruitBodies: Array<{ position: { x: number; y: number }; fruitIndex?: number }>,
+  fruitBodies: Array<{ position: { x: number; y: number }; angle?: number; fruitIndex?: number }>,
   state: WatermelonState,
   isDark: boolean,
   nextLabel: string,
@@ -468,10 +661,29 @@ export function renderGame(
   const progSpacing = (progEndX - progStartX) / (progCount - 1);
   for (let i = 0; i < progCount; i++) {
     const px = progStartX + i * progSpacing;
-    ctx.font = `${11 + i * 0.8}px serif`;
+    const unlocked = i <= state.maxFruitIndex;
+    const isCurrent = i === state.maxFruitIndex && state.maxFruitIndex > 0;
+    const fontSize = 11 + i * 0.8;
+
+    ctx.save();
+
+    // Dim locked fruits
+    if (!unlocked) ctx.globalAlpha = 0.25;
+
+    // Highlight ring behind current max fruit
+    if (isCurrent) {
+      ctx.fillStyle = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)";
+      ctx.beginPath();
+      ctx.arc(px, progY, fontSize * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.font = `${fontSize}px serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(FRUITS[i].emoji, px, progY);
+
+    ctx.restore();
   }
 
   // ── Container ──
@@ -485,6 +697,11 @@ export function renderGame(
   roundRect(ctx, 0, 0, CONTAINER_WIDTH * scale, CONTAINER_HEIGHT * scale, 6);
   ctx.fill();
   ctx.stroke();
+
+  // Floor bar — gold/yellow ground plane at bottom
+  const floorH = 6 * scale;
+  ctx.fillStyle = isDark ? "#5A6A3A" : "#C8B43C";
+  ctx.fillRect(2, CONTAINER_HEIGHT * scale - floorH, CONTAINER_WIDTH * scale - 4, floorH);
 
   // Danger line
   ctx.save();
@@ -526,7 +743,7 @@ export function renderGame(
     const fi = (body as any).fruitIndex as number | undefined;
     if (fi === undefined) continue;
     const def = FRUITS[fi];
-    drawFruit(ctx, body.position.x * scale, body.position.y * scale, def, scale);
+    drawFruit(ctx, body.position.x * scale, body.position.y * scale, def, scale, 1, (body as any).angle ?? 0);
   }
 
   // Merge effects

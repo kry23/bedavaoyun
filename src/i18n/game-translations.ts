@@ -68,6 +68,11 @@ const translations: Record<Locale, Record<string, GameTranslation>> = {
       description: "Meyveleri birleştir, karpuzu yap!",
       scoreLabel: "Puan",
     },
+    blockbreaker: {
+      name: "Tuğla Kırma",
+      description: "Topu sektir, tuğlaları kır, en yüksek skoru yap!",
+      scoreLabel: "Puan",
+    },
   },
   en: {
     minesweeper: {
@@ -128,6 +133,11 @@ const translations: Record<Locale, Record<string, GameTranslation>> = {
     watermelon: {
       name: "Watermelon Game",
       description: "Merge fruits and make a watermelon!",
+      scoreLabel: "Points",
+    },
+    blockbreaker: {
+      name: "Block Breaker",
+      description: "Bounce the ball, break blocks, get the highest score!",
       scoreLabel: "Points",
     },
   },
