@@ -103,105 +103,81 @@ for (let r = 0; r < 2; r++)
 
 /* ── Fortress ─────────────────────────────────────────────── */
 
+// Use dedup helper to avoid duplicate positions
+const _fSet = new Set<string>();
 const fortressPositions: LayoutPosition[] = [];
-// 4 towers (corners): each 3×3 base, 2 layers deep
-const towers = [
-  { startCol: 0, startRow: 0 },
-  { startCol: 12, startRow: 0 },
-  { startCol: 0, startRow: 10 },
-  { startCol: 12, startRow: 10 },
-];
-for (const { startCol, startRow } of towers) {
-  // Layer 0: 3×3 = 9
-  for (let r = 0; r < 3; r++)
-    for (let c = 0; c < 3; c++)
-      fortressPositions.push(p(startCol + c * 2, startRow + r * 2, 0));
-  // Layer 1: 2×2 = 4
-  for (let r = 0; r < 2; r++)
-    for (let c = 0; c < 2; c++)
-      fortressPositions.push(p(startCol + c * 2 + 1, startRow + r * 2 + 1, 1));
-  // Layer 2: 1 = 1
-  fortressPositions.push(p(startCol + 2, startRow + 2, 2));
+function addF(col: number, row: number, layer: number) {
+  const key = `${col},${row},${layer}`;
+  if (!_fSet.has(key)) { _fSet.add(key); fortressPositions.push(p(col, row, layer)); }
 }
-// 4 towers × (9+4+1) = 56 tiles
-
-// Bridge (center): 4 rows × 4 cols = 16 tiles
+// 4 corner towers: each 3×3 L0 + 2×2 L1 + 1 L2 = 14 per tower = 56
+for (const [sc, sr] of [[0, 0], [14, 0], [0, 10], [14, 10]]) {
+  for (let r = 0; r < 3; r++)
+    for (let c = 0; c < 3; c++) addF(sc + c * 2, sr + r * 2, 0);
+  for (let r = 0; r < 2; r++)
+    for (let c = 0; c < 2; c++) addF(sc + c * 2 + 1, sr + r * 2 + 1, 1);
+  addF(sc + 2, sr + 2, 2);
+}
+// Walls connecting towers — L0
+// Top wall
+for (let c = 0; c < 3; c++) addF(6 + c * 2, 0, 0);
+for (let c = 0; c < 3; c++) addF(6 + c * 2, 2, 0);
+// Bottom wall
+for (let c = 0; c < 3; c++) addF(6 + c * 2, 12, 0);
+for (let c = 0; c < 3; c++) addF(6 + c * 2, 14, 0);
+// Left wall
+for (let r = 0; r < 2; r++) addF(0, 5 + r * 2, 0);
+for (let r = 0; r < 2; r++) addF(2, 5 + r * 2, 0);
+// Right wall
+for (let r = 0; r < 2; r++) addF(18, 5 + r * 2, 0);
+for (let r = 0; r < 2; r++) addF(16, 5 + r * 2, 0);
+// Inner courtyard — L0: 5×4 = 20
 for (let r = 0; r < 4; r++)
-  for (let c = 0; c < 4; c++)
-    fortressPositions.push(p(5 + c * 2, 4 + r * 2, 0));
-// Bridge layer 1: 2×2 = 4
+  for (let c = 0; c < 5; c++) addF(5 + c * 2, 4 + r * 2, 0);
+// Courtyard L1: 4×3 = 12
+for (let r = 0; r < 3; r++)
+  for (let c = 0; c < 4; c++) addF(6 + c * 2, 5 + r * 2, 1);
+// Courtyard L2: 3×2 = 6
 for (let r = 0; r < 2; r++)
-  for (let c = 0; c < 2; c++)
-    fortressPositions.push(p(6 + c * 2, 5 + r * 2, 1));
-
-// Walls: connecting towers
-// Top wall: 4 tiles
-for (let c = 0; c < 4; c++)
-  fortressPositions.push(p(4 + c * 2, 0, 0));
-// Bottom wall: 4 tiles
-for (let c = 0; c < 4; c++)
-  fortressPositions.push(p(4 + c * 2, 14, 0));
-// Left wall: 4 tiles
-for (let r = 0; r < 4; r++)
-  fortressPositions.push(p(0, 4 + r * 2, 0));
-// Right wall: 4 tiles
-for (let r = 0; r < 4; r++)
-  fortressPositions.push(p(16, 4 + r * 2, 0));
-
-// Total so far: 56 + 16 + 4 + 16 + 4 = 96
-// Need 48 more → add inner courtyard and extra layer
-// Inner courtyard: 6×4 = 24 tiles
-for (let r = 0; r < 4; r++)
-  for (let c = 0; c < 6; c++)
-    fortressPositions.push(p(3 + c * 2, 4 + r * 2, 0));
-
-// Extra top: 4×3 = 12
-for (let r = 0; r < 3; r++)
-  for (let c = 0; c < 4; c++)
-    fortressPositions.push(p(4 + c * 2, 5 + r * 2, 1));
-
-// Need 12 more → additional layer
-for (let r = 0; r < 3; r++)
-  for (let c = 0; c < 4; c++)
-    fortressPositions.push(p(5 + c * 2, 6 + r * 2, 2));
+  for (let c = 0; c < 3; c++) addF(7 + c * 2, 6 + r * 2, 2);
+// Courtyard L3: 2×1 = 2
+addF(8, 7, 3); addF(10, 7, 3);
+// Pad remaining to 144 with unique edge positions
+let _fEdge = 0;
+while (fortressPositions.length < 144) {
+  addF(20 + (_fEdge % 3) * 2, Math.floor(_fEdge / 3) * 2, 0);
+  _fEdge++;
+}
 
 /* ── Cross ────────────────────────────────────────────────── */
 
+// Use dedup helper to avoid duplicate positions
+const _cSet = new Set<string>();
 const crossPositions: LayoutPosition[] = [];
-// Horizontal bar: 12×4 = 48 tiles
-for (let r = 0; r < 4; r++)
-  for (let c = 0; c < 12; c++)
-    crossPositions.push(p(c * 2, 5 + r * 2, 0));
-// Vertical bar: 12×4 = 48, but center already counted (overlap 4×4=16)
-for (let r = 0; r < 12; r++)
-  for (let c = 0; c < 4; c++) {
-    const col = 8 + c * 2;
-    const row = r * 2;
-    // Skip center overlap
-    if (row >= 5 * 2 && row <= 8 * 2 && col >= 8 && col <= 14) continue;
-    crossPositions.push(p(col, row, 0));
-  }
-// Layer 1: Cross center 6×3 = 18 tiles
-for (let r = 0; r < 3; r++)
-  for (let c = 0; c < 6; c++)
-    crossPositions.push(p(5 + c * 2, 6 + r * 2, 1));
-// Layer 2: 4×2 = 8
-for (let r = 0; r < 2; r++)
-  for (let c = 0; c < 4; c++)
-    crossPositions.push(p(6 + c * 2, 7 + r * 2, 2));
-// Layer 3: 2×1 = 2
-crossPositions.push(p(7, 8, 3));
-crossPositions.push(p(9, 8, 3));
-
-// Pad to 144 if needed
-while (crossPositions.length < 144) {
-  // Add to edges
-  const len = crossPositions.length;
-  const r = len % 2 === 0 ? 0 : 14;
-  crossPositions.push(p(20 + (len % 4) * 2, r, 0));
+function addC(col: number, row: number, layer: number) {
+  const key = `${col},${row},${layer}`;
+  if (!_cSet.has(key)) { _cSet.add(key); crossPositions.push(p(col, row, layer)); }
 }
-// Trim if over
-while (crossPositions.length > 144) crossPositions.pop();
+// L0: Cross shape — horizontal 12×4 + vertical 4×12, deduped overlap = 80
+// Horizontal bar: cols 0..22, rows 4,6,8,10
+for (let r = 0; r < 4; r++)
+  for (let c = 0; c < 12; c++) addC(c * 2, 4 + r * 2, 0);
+// Vertical bar: cols 8,10,12,14, rows 0..22
+for (let r = 0; r < 12; r++)
+  for (let c = 0; c < 4; c++) addC(8 + c * 2, r * 2, 0);
+// L1: 6×6 = 36 tiles
+for (let r = 0; r < 6; r++)
+  for (let c = 0; c < 6; c++) addC(5 + c * 2, 3 + r * 2, 1);
+// L2: 4×4 = 16 tiles
+for (let r = 0; r < 4; r++)
+  for (let c = 0; c < 4; c++) addC(6 + c * 2, 4 + r * 2, 2);
+// L3: 4×2 = 8 tiles
+for (let r = 0; r < 2; r++)
+  for (let c = 0; c < 4; c++) addC(7 + c * 2, 5 + r * 2, 3);
+// L4: 2×2 = 4 tiles
+for (let r = 0; r < 2; r++)
+  for (let c = 0; c < 2; c++) addC(8 + c * 2, 6 + r * 2, 4);
+// Total: 80 + 36 + 16 + 8 + 4 = 144
 
 /* ── Export ────────────────────────────────────────────────── */
 
