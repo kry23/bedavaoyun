@@ -40,6 +40,12 @@ export const metadata: Metadata = {
       "en": SITE_URL_EN,
     },
   },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+  },
   verification: {
     google: "zxhKXzL9Hnn3v5DzPKQp4z35Uuj6fZxTFMVzcrqC_CU",
   },

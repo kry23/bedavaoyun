@@ -33,6 +33,12 @@ export const metadata: Metadata = {
     "memory game", "tetris online", "15 puzzle", "brain games",
     "puzzle games", "mobile games", "play without download",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+  },
   alternates: {
     canonical: SITE_URL_EN,
     languages: {

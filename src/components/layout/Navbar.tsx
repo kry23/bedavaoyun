@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Gamepad2 } from "lucide-react";
+import { Logo } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
@@ -35,9 +35,8 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[hsl(var(--border))] bg-[hsl(var(--background))]/95 backdrop-blur supports-[backdrop-filter]:bg-[hsl(var(--background))]/60">
       <div className="mx-auto flex h-14 max-w-5xl items-center px-4">
-        <Link href={getHomePath(locale)} className="mr-6 flex items-center gap-2 font-bold">
-          <Gamepad2 className="h-5 w-5 text-primary-500" />
-          <span>{t.common.siteName}</span>
+        <Link href={getHomePath(locale)} className="mr-6 flex items-center gap-1">
+          <Logo size="md" text={t.common.siteName} />
         </Link>
 
         {/* Desktop nav */}
