@@ -33,10 +33,10 @@ const translations: Record<Locale, Record<string, GameTranslation>> = {
       description: "9x9 ızgarayı 1-9 sayılarıyla doldur!",
       scoreLabel: "Süre",
     },
-    memory: {
-      name: "Hafıza Oyunu",
-      description: "Kartları eşleştir, hafızanı test et!",
-      scoreLabel: "Hamle",
+    mahjong: {
+      name: "Mahjong",
+      description: "Taşları eşleştir, tahtayı temizle!",
+      scoreLabel: "Süre",
     },
     tetris: {
       name: "Tetris",
@@ -47,6 +47,26 @@ const translations: Record<Locale, Record<string, GameTranslation>> = {
       name: "15 Bulmaca",
       description: "Karoları kaydırarak sıraya diz!",
       scoreLabel: "Hamle",
+    },
+    connections: {
+      name: "Bağlantılar",
+      description: "16 kelimeyi 4 gruba ayır!",
+      scoreLabel: "Hata",
+    },
+    hangman: {
+      name: "Adam Asmaca",
+      description: "Harfleri tahmin et, kelimeyi bul!",
+      scoreLabel: "Puan",
+    },
+    globle: {
+      name: "Globle",
+      description: "Gizli ülkeyi tahmin et, dünyayı keşfet!",
+      scoreLabel: "Tahmin",
+    },
+    watermelon: {
+      name: "Karpuz Oyunu",
+      description: "Meyveleri birleştir, karpuzu yap!",
+      scoreLabel: "Puan",
     },
   },
   en: {
@@ -75,10 +95,10 @@ const translations: Record<Locale, Record<string, GameTranslation>> = {
       description: "Fill the 9x9 grid with numbers 1-9!",
       scoreLabel: "Time",
     },
-    memory: {
-      name: "Memory Game",
-      description: "Match the cards, test your memory!",
-      scoreLabel: "Moves",
+    mahjong: {
+      name: "Mahjong Solitaire",
+      description: "Match tiles and clear the board!",
+      scoreLabel: "Time",
     },
     tetris: {
       name: "Tetris",
@@ -89,6 +109,26 @@ const translations: Record<Locale, Record<string, GameTranslation>> = {
       name: "15 Puzzle",
       description: "Slide tiles to put them in order!",
       scoreLabel: "Moves",
+    },
+    connections: {
+      name: "Connections",
+      description: "Sort 16 words into 4 groups!",
+      scoreLabel: "Mistakes",
+    },
+    hangman: {
+      name: "Hangman",
+      description: "Guess letters and find the word!",
+      scoreLabel: "Points",
+    },
+    globle: {
+      name: "Globle",
+      description: "Guess the mystery country, explore the world!",
+      scoreLabel: "Guesses",
+    },
+    watermelon: {
+      name: "Watermelon Game",
+      description: "Merge fruits and make a watermelon!",
+      scoreLabel: "Points",
     },
   },
 };

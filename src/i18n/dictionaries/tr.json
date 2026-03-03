@@ -109,7 +109,8 @@
   "difficulty": {
     "easy": "Kolay",
     "medium": "Orta",
-    "hard": "Zor"
+    "hard": "Zor",
+    "expert": "Uzman"
   },
   "minesweeper": {
     "instructions": "Sol tık: Aç | Sağ tık: Bayrak | Mobil: Uzun bas = Bayrak"
@@ -133,11 +134,23 @@
     "errors": "Hata:",
     "noteOn": "Not Açık",
     "noteOff": "Not Kapalı",
-    "delete": "Sil"
+    "delete": "Sil",
+    "undo": "Geri Al",
+    "hint": "İpucu",
+    "hintsUsed": "İpucu:",
+    "gameOver": "Oyun Bitti!",
+    "tooManyMistakes": "3 hata yaptınız",
+    "pause": "Duraklat",
+    "resume": "Devam"
   },
-  "memory": {
-    "refresh": "Yenile",
-    "matches": "Eşleşme:"
+  "mahjong": {
+    "tilesLeft": "Kalan:",
+    "shuffle": "Karıştır",
+    "hint": "İpucu",
+    "undo": "Geri Al",
+    "newGame": "Yeni Oyun",
+    "stuck": "Hamle kalmadı!",
+    "hintsUsed": "İpucu:"
   },
   "tetris": {
     "continue": "Devam",
@@ -154,6 +167,41 @@
   },
   "puzzle15": {
     "shuffle": "Karıştır"
+  },
+  "connections": {
+    "shuffle": "Karıştır",
+    "deselect": "Temizle",
+    "submit": "Gönder",
+    "mistakes": "Kalan Hak",
+    "oneAway": "Bir tanesi hariç doğru!",
+    "alreadyGuessed": "Bu tahmini zaten yaptınız!",
+    "newPuzzle": "Yeni Bulmaca",
+    "share": "Paylaş",
+    "copied": "Kopyalandı!"
+  },
+  "hangman": {
+    "newGame": "Yeni Oyun",
+    "nextWord": "Sonraki Kelime",
+    "score": "Puan",
+    "streak": "Seri",
+    "lives": "Kalan hak",
+    "useLetters": "Aşağıdaki harfleri kullanın",
+    "congrats": "Tebrikler!",
+    "theWord": "Kelime:"
+  },
+  "globle": {
+    "title": "Globle",
+    "placeholder": "Ülke adı girin...",
+    "hint": "Gizli ülkeyi bulmak için bir ülke adı girin. Renk ne kadar sıcaksa o kadar yakınsınız!",
+    "guessCount": "Tahmin sayısı",
+    "far": "Uzak",
+    "close": "Yakın",
+    "congrats": "Tebrikler! Gizli ülkeyi buldunuz!",
+    "newGame": "Yeni Oyun"
+  },
+  "watermelon": {
+    "instructions": "Tıklayarak meyve bırakın. Aynı meyveler birleşir!",
+    "next": "Sonraki"
   },
   "footer": {
     "copyright": "Tüm hakları saklıdır."

@@ -6,6 +6,8 @@ import { GameJsonLd } from "@/components/game/JsonLd";
 import { RelatedGames } from "@/components/game/RelatedGames";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { trAlternates } from "@/i18n/alternates";
+import { GameGuide } from "@/components/game/GameGuide";
+import { getGameGuide } from "@/lib/game-guides";
 
 interface Props {
   params: { slug: string };
@@ -39,8 +41,8 @@ const gameComponents: Record<string, ReturnType<typeof dynamic>> = {
     () => import("@/games/sudoku/SudokuGame"),
     { loading: GameSkeleton, ssr: false }
   ),
-  memory: dynamic(
-    () => import("@/games/memory/MemoryGame"),
+  mahjong: dynamic(
+    () => import("@/games/mahjong/MahjongGame"),
     { loading: GameSkeleton, ssr: false }
   ),
   tetris: dynamic(
@@ -49,6 +51,22 @@ const gameComponents: Record<string, ReturnType<typeof dynamic>> = {
   ),
   puzzle15: dynamic(
     () => import("@/games/puzzle15/Puzzle15Game"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  connections: dynamic(
+    () => import("@/games/connections/ConnectionsGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  hangman: dynamic(
+    () => import("@/games/hangman/HangmanGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  globle: dynamic(
+    () => import("@/games/globle/GlobleGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  watermelon: dynamic(
+    () => import("@/games/watermelon/WatermelonGame"),
     { loading: GameSkeleton, ssr: false }
   ),
 };
@@ -79,10 +97,13 @@ export default function GamePage({ params }: Props) {
   const GameComponent = gameComponents[params.slug];
   if (!GameComponent) notFound();
 
+  const guide = getGameGuide(params.slug, "tr");
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <GameJsonLd game={game} slug={params.slug} />
       <GameComponent />
+      {guide && <GameGuide guide={guide} faqTitle="Sıkça Sorulan Sorular" gameSlug={params.slug} locale="tr" />}
       <RelatedGames currentSlug={params.slug} />
     </div>
   );

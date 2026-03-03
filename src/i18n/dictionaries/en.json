@@ -109,7 +109,8 @@
   "difficulty": {
     "easy": "Easy",
     "medium": "Medium",
-    "hard": "Hard"
+    "hard": "Hard",
+    "expert": "Expert"
   },
   "minesweeper": {
     "instructions": "Left click: Reveal | Right click: Flag | Mobile: Long press = Flag"
@@ -133,11 +134,23 @@
     "errors": "Errors:",
     "noteOn": "Notes On",
     "noteOff": "Notes Off",
-    "delete": "Delete"
+    "delete": "Delete",
+    "undo": "Undo",
+    "hint": "Hint",
+    "hintsUsed": "Hints:",
+    "gameOver": "Game Over!",
+    "tooManyMistakes": "You made 3 mistakes",
+    "pause": "Pause",
+    "resume": "Resume"
   },
-  "memory": {
-    "refresh": "Refresh",
-    "matches": "Matches:"
+  "mahjong": {
+    "tilesLeft": "Left:",
+    "shuffle": "Shuffle",
+    "hint": "Hint",
+    "undo": "Undo",
+    "newGame": "New Game",
+    "stuck": "No moves left!",
+    "hintsUsed": "Hints:"
   },
   "tetris": {
     "continue": "Continue",
@@ -154,6 +167,41 @@
   },
   "puzzle15": {
     "shuffle": "Shuffle"
+  },
+  "connections": {
+    "shuffle": "Shuffle",
+    "deselect": "Deselect",
+    "submit": "Submit",
+    "mistakes": "Remaining",
+    "oneAway": "One away!",
+    "alreadyGuessed": "Already guessed!",
+    "newPuzzle": "New Puzzle",
+    "share": "Share",
+    "copied": "Copied!"
+  },
+  "hangman": {
+    "newGame": "New Game",
+    "nextWord": "Next Word",
+    "score": "Score",
+    "streak": "Streak",
+    "lives": "Lives",
+    "useLetters": "Use the letters below",
+    "congrats": "Well done!",
+    "theWord": "The word was:"
+  },
+  "globle": {
+    "title": "Globle",
+    "placeholder": "Enter country name...",
+    "hint": "Type a country name to find the mystery country. The hotter the color, the closer you are!",
+    "guessCount": "Guesses",
+    "far": "Far",
+    "close": "Close",
+    "congrats": "Congratulations! You found the mystery country!",
+    "newGame": "New Game"
+  },
+  "watermelon": {
+    "instructions": "Click to drop fruit. Matching fruits merge!",
+    "next": "Next"
   },
   "footer": {
     "copyright": "All rights reserved."

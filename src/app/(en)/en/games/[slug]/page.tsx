@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { getGameTranslation } from "@/i18n/game-translations";
 import { enAlternates } from "@/i18n/alternates";
 import { SITE_NAME_EN } from "@/utils/constants";
+import { GameGuide } from "@/components/game/GameGuide";
+import { getGameGuide } from "@/lib/game-guides";
 
 interface Props {
   params: { slug: string };
@@ -41,8 +43,8 @@ const gameComponents: Record<string, ReturnType<typeof dynamic>> = {
     () => import("@/games/sudoku/SudokuGame"),
     { loading: GameSkeleton, ssr: false }
   ),
-  memory: dynamic(
-    () => import("@/games/memory/MemoryGame"),
+  mahjong: dynamic(
+    () => import("@/games/mahjong/MahjongGame"),
     { loading: GameSkeleton, ssr: false }
   ),
   tetris: dynamic(
@@ -51,6 +53,22 @@ const gameComponents: Record<string, ReturnType<typeof dynamic>> = {
   ),
   puzzle15: dynamic(
     () => import("@/games/puzzle15/Puzzle15Game"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  connections: dynamic(
+    () => import("@/games/connections/ConnectionsGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  hangman: dynamic(
+    () => import("@/games/hangman/HangmanGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  globle: dynamic(
+    () => import("@/games/globle/GlobleGame"),
+    { loading: GameSkeleton, ssr: false }
+  ),
+  watermelon: dynamic(
+    () => import("@/games/watermelon/WatermelonGame"),
     { loading: GameSkeleton, ssr: false }
   ),
 };
@@ -83,11 +101,13 @@ export default function EnglishGamePage({ params }: Props) {
   if (!GameComponent) notFound();
 
   const gt = getGameTranslation(params.slug, "en");
+  const guide = getGameGuide(params.slug, "en");
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <GameJsonLd game={{ ...game, ...gt }} slug={params.slug} locale="en" />
       <GameComponent />
+      {guide && <GameGuide guide={guide} faqTitle="Frequently Asked Questions" gameSlug={params.slug} locale="en" />}
       <RelatedGames currentSlug={params.slug} />
     </div>
   );
