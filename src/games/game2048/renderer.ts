@@ -157,9 +157,6 @@ export function renderAnimatedFrame(
   const popProgress = progress > popStart ? Math.min(1, (progress - popStart) / 0.5) : 0;
 
   // Phase 1: Draw sliding tiles
-  // Skip tiles at merge destinations (they'll be drawn as merges)
-  const mergeDestSet = new Set(mergedCells.map((m) => `${m.r},${m.c}`));
-
   for (const tm of tileMoves) {
     const fromPos = tilePos(tm.fromR, tm.fromC, tileSize);
     const toPos = tilePos(tm.toR, tm.toC, tileSize);

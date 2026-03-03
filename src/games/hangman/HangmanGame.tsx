@@ -7,7 +7,7 @@ import { MAX_WRONG_GUESSES, TR_KEYBOARD, EN_KEYBOARD } from "./types";
 import { GameShell } from "@/components/game/GameShell";
 import { GameOverModal } from "@/components/game/GameOverModal";
 import { gameRegistry } from "@/lib/game-registry";
-import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { useLocale } from "@/i18n/useTranslation";
 import { getGameTranslation } from "@/i18n/game-translations";
 
 const GAME_INFO = gameRegistry.hangman;
@@ -108,7 +108,6 @@ function HangmanSvg({ wrongGuesses }: { wrongGuesses: number }) {
 /* ── Main Component ───────────────────────────────────────── */
 
 export default function HangmanGame() {
-  const t = useTranslation();
   const locale = useLocale() as "tr" | "en";
   const gameT = getGameTranslation("hangman", locale);
 

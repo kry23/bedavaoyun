@@ -743,6 +743,7 @@ export function renderGame(
     const fi = (body as any).fruitIndex as number | undefined;
     if (fi === undefined) continue;
     const def = FRUITS[fi];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     drawFruit(ctx, body.position.x * scale, body.position.y * scale, def, scale, 1, (body as any).angle ?? 0);
   }
 

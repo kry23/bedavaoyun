@@ -230,16 +230,7 @@ export default function WordleGame() {
 
   // Determine keyboard letter colors (only use revealed letters)
   const keyboardLetterStates = { ...state.usedLetters };
-  // If a row is currently flipping, don't show those letters on keyboard yet
-  if (flippingRow !== null && flippingRow < state.guesses.length) {
-    const flippingGuess = state.guesses[flippingRow];
-    for (let c = 0; c < WORD_LENGTH; c++) {
-      if (!revealedCols.has(c)) {
-        // Remove this letter's state if it was only set by the flipping row
-        // (simplified: we just keep the state as-is since it was already set)
-      }
-    }
-  }
+  // Note: flippingRow is used only for visual animation above, keyboard states stay as-is
 
   return (
     <GameShell

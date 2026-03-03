@@ -13,14 +13,14 @@ import {
 } from "./types";
 
 /** Get the fruitIndex stored on a matter.js body */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getFruitIndex(body: Matter.Body): number | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (body as any).fruitIndex;
 }
 
 /** Set the fruitIndex on a matter.js body */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setFruitIndex(body: Matter.Body, idx: number): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (body as any).fruitIndex = idx;
 }
 

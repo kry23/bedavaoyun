@@ -4,7 +4,7 @@ import { useState, useCallback, useRef } from "react";
 import { GameShell } from "@/components/game/GameShell";
 import { GameOverModal } from "@/components/game/GameOverModal";
 import { gameRegistry } from "@/lib/game-registry";
-import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { useLocale } from "@/i18n/useTranslation";
 import { Shuffle, X, Send, Share2 } from "lucide-react";
 import {
   createRandomGame,
@@ -17,12 +17,11 @@ import {
 } from "./engine";
 import type { ConnectionsState, SolvedGroup } from "./types";
 import { DIFFICULTY_COLORS, GROUP_SIZE, MAX_MISTAKES } from "./types";
-import type { ConnectionsLocale, GuessResult } from "./engine";
+import type { ConnectionsLocale } from "./engine";
 
 const game = gameRegistry.connections;
 
 export default function ConnectionsGame() {
-  const t = useTranslation();
   const locale = useLocale() as ConnectionsLocale;
 
   const [state, setState] = useState<ConnectionsState>(() =>

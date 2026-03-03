@@ -9,7 +9,7 @@ import {
   eraseCell,
   toggleNote,
   undo,
-  useHint,
+  useHint as applyHint,
   getNumberCounts,
 } from "./engine";
 import { DIFFICULTY_CONFIG, type Difficulty, type SudokuState } from "./types";
@@ -114,7 +114,7 @@ export default function SudokuGame() {
   const handleHint = useCallback(() => {
     if (isFinished || paused) return;
     setState((s) => {
-      const next = useHint(s);
+      const next = applyHint(s);
       if (next.status === "won") {
         setTimeout(() => setShowModal(true), 500);
       }

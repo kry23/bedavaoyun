@@ -18,7 +18,7 @@ import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";
 import { gameRegistry } from "@/lib/game-registry";
 import { useGameTimer } from "@/hooks/useGameTimer";
-import { useTranslation, useLocale } from "@/i18n/useTranslation";
+import { useLocale } from "@/i18n/useTranslation";
 import { getGameTranslation } from "@/i18n/game-translations";
 import { RotateCcw, Undo2, Lightbulb, Shuffle } from "lucide-react";
 import { cn } from "@/utils/cn";
@@ -161,7 +161,7 @@ function TileFace({ type }: { type: TileType }) {
         sticks.push({ color: i % 2 === 0 ? "#16a34a" : "#c02020" });
       }
       const cols = v <= 3 ? v : v <= 6 ? Math.ceil(v / 2) : Math.ceil(v / 3);
-      const rows = Math.ceil(v / cols);
+      // rows = Math.ceil(v / cols) — used implicitly by grid layout
       return (
         <div
           className="grid items-center justify-center"
@@ -257,7 +257,7 @@ function TileFace({ type }: { type: TileType }) {
 
 /* ── 3D tile edge colors (matching mahjong.gg: rgb(25,25,25)) */
 const EDGE_COLOR = "#191919";       // nearly black, like mahjong.gg
-const EDGE_COLOR_DARK = "#111111";  // bottom edge
+// const EDGE_COLOR_DARK = "#111111";  // bottom edge (reserved for future use)
 
 /* ── Main Component ──────────────────────────────────────── */
 
@@ -268,7 +268,6 @@ export default function MahjongGame() {
   const [removingIds, setRemovingIds] = useState<Set<number>>(new Set());
   const [shakeId, setShakeId] = useState<number | null>(null);
   const timer = useGameTimer(state.status === "playing");
-  const t = useTranslation();
   const locale = useLocale();
   const gameT = getGameTranslation("mahjong", locale);
   const boardRef = useRef<HTMLDivElement>(null);

@@ -13,7 +13,7 @@ import { gameRegistry } from "@/lib/game-registry";
 import { useKeyboard } from "@/hooks/useKeyboard";
 import { useTranslation, useLocale } from "@/i18n/useTranslation";
 import { getGameTranslation } from "@/i18n/game-translations";
-import { resumeAudioContext, playBlockBreak, playPaddleHit, playBallLost, playPowerUp, playLevelComplete } from "./sounds";
+import { resumeAudioContext, playBlockBreak, playBallLost, playPowerUp, playLevelComplete } from "./sounds";
 import { RotateCcw, Pause, Play } from "lucide-react";
 import { TOTAL_LEVELS } from "./levels";
 
@@ -84,8 +84,6 @@ export default function BlockBreakerGame() {
       rafRef.current = requestAnimationFrame(renderLoop);
     }
   }, [draw]);
-
-  const prevPowerUpCountRef = useRef(0);
 
   const gameLoop = useCallback(() => {
     const s = stateRef.current;

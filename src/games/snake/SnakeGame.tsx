@@ -5,7 +5,6 @@ import { useTheme } from "next-themes";
 import { createGame, changeDirection, tick } from "./engine";
 import { renderGame } from "./renderer";
 import type { SnakeState, Direction } from "./types";
-import { GRID_SIZE } from "./types";
 import { GameShell } from "@/components/game/GameShell";
 import { GameOverModal } from "@/components/game/GameOverModal";
 import { Button } from "@/components/ui/Button";

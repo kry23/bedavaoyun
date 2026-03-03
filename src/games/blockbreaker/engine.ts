@@ -3,7 +3,6 @@ import type {
   Block,
   Ball,
   Paddle,
-  PowerUp,
   Laser,
   Particle,
   PowerUpType,
@@ -235,6 +234,7 @@ export function tick(state: BlockBreakerState): BlockBreakerState {
   if (state.status !== "playing") return state;
 
   const now = Date.now();
+  // eslint-disable-next-line prefer-const
   let { balls, blocks, powerUps, lasers, particles, score, lives, activePowerUps } =
     structuredClone(state);
   const paddle = { ...state.paddle };
