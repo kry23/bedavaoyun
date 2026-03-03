@@ -76,7 +76,10 @@
     "hasAccount": "Zaten hesabın var mı?",
     "loginSuccess": "Giriş başarılı!",
     "registerSuccess": "Kayıt başarılı! Giriş yapabilirsiniz.",
-    "supabaseNotConfigured": "Supabase henüz yapılandırılmamış"
+    "supabaseNotConfigured": "Supabase henüz yapılandırılmamış",
+    "googleLogin": "Google ile Giriş Yap",
+    "googleSignUp": "Google ile Kayıt Ol",
+    "orEmail": "veya"
   },
   "profile": {
     "title": "Profil",

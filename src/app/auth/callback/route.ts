@@ -1,0 +1,47 @@
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { NextResponse, type NextRequest } from "next/server";
+
+const EN_DOMAIN = "freegames4you.online";
+
+export async function GET(request: NextRequest) {
+  const { searchParams, origin } = request.nextUrl;
+  const code = searchParams.get("code");
+  const host = request.headers.get("host") || "";
+
+  if (code) {
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch {
+              // Can be ignored in server component context
+            }
+          },
+        },
+      }
+    );
+
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (!error) {
+      // Redirect based on domain
+      const isEn = host === EN_DOMAIN || host === `www.${EN_DOMAIN}`;
+      const redirectTo = isEn ? `${origin}/en` : origin;
+      return NextResponse.redirect(redirectTo);
+    }
+  }
+
+  // Something went wrong — redirect to home
+  return NextResponse.redirect(origin);
+}

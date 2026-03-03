@@ -128,6 +128,6 @@ async function handleSupabase(request: NextRequest, pathname: string) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp3|wav)$|manifest\\.json|api/).*)",
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|mp3|wav)$|manifest\\.json|api/|auth/callback).*)",
   ],
 };

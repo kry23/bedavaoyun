@@ -76,7 +76,10 @@
     "hasAccount": "Already have an account?",
     "loginSuccess": "Signed in successfully!",
     "registerSuccess": "Sign up successful! You can now sign in.",
-    "supabaseNotConfigured": "Supabase is not configured yet"
+    "supabaseNotConfigured": "Supabase is not configured yet",
+    "googleLogin": "Sign in with Google",
+    "googleSignUp": "Sign up with Google",
+    "orEmail": "or"
   },
   "profile": {
     "title": "Profile",
