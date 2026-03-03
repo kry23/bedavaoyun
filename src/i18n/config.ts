@@ -10,6 +10,7 @@ export const pathMap = {
     register: "kayit",
     profile: "profil",
     blog: "blog",
+    feedback: "geri-bildirim",
   },
   en: {
     games: "games",
@@ -18,6 +19,7 @@ export const pathMap = {
     register: "register",
     profile: "profile",
     blog: "blog",
+    feedback: "feedback",
   },
 } as const;
 

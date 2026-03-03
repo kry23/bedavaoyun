@@ -20,7 +20,8 @@
     "profile": "Profil",
     "login": "Giriş Yap",
     "register": "Kayıt Ol",
-    "logout": "Çıkış"
+    "logout": "Çıkış",
+    "feedback": "Geri Bildirim"
   },
   "home": {
     "hero": "Ücretsiz Tarayıcı Oyunları",
@@ -213,6 +214,28 @@
     "pause": "Duraklat",
     "continue": "Devam",
     "restartAll": "Baştan Başla"
+  },
+  "feedback": {
+    "title": "Geri Bildirim",
+    "description": "Görüşleriniz bizim için çok değerli. Oyunlar, öneriler veya hatalar hakkında bize yazın.",
+    "name": "Ad",
+    "namePlaceholder": "Adınız",
+    "email": "E-posta",
+    "emailPlaceholder": "ornek@email.com",
+    "category": "Kategori",
+    "message": "Mesajınız",
+    "messagePlaceholder": "Düşüncelerinizi buraya yazın...",
+    "submit": "Gönder",
+    "sending": "Gönderiliyor...",
+    "success": "Geri bildiriminiz alındı, teşekkürler!",
+    "error": "Bir hata oluştu, lütfen tekrar deneyin.",
+    "thankYou": "Teşekkürler!",
+    "successMessage": "Geri bildiriminiz başarıyla gönderildi. En kısa sürede değerlendireceğiz.",
+    "sendAnother": "Yeni Geri Bildirim Gönder",
+    "catGeneral": "Genel",
+    "catSuggestion": "Oyun Önerisi",
+    "catBug": "Hata Bildirimi",
+    "catImprovement": "İyileştirme"
   },
   "footer": {
     "copyright": "Tüm hakları saklıdır."

@@ -59,6 +59,32 @@ export interface Database {
           metadata?: Json | null;
         };
       };
+      feedback: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          name: string;
+          email: string;
+          category: string;
+          message: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          name: string;
+          email: string;
+          category?: string;
+          message: string;
+          created_at?: string;
+        };
+        Update: {
+          name?: string;
+          email?: string;
+          category?: string;
+          message?: string;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

@@ -20,7 +20,8 @@
     "profile": "Profile",
     "login": "Sign In",
     "register": "Sign Up",
-    "logout": "Sign Out"
+    "logout": "Sign Out",
+    "feedback": "Feedback"
   },
   "home": {
     "hero": "Free Browser Games",
@@ -213,6 +214,28 @@
     "pause": "Pause",
     "continue": "Continue",
     "restartAll": "Restart All"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "description": "Your feedback is valuable to us. Share your thoughts about games, suggestions, or report issues.",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "category": "Category",
+    "message": "Your Message",
+    "messagePlaceholder": "Write your thoughts here...",
+    "submit": "Send",
+    "sending": "Sending...",
+    "success": "Your feedback has been received, thank you!",
+    "error": "Something went wrong, please try again.",
+    "thankYou": "Thank You!",
+    "successMessage": "Your feedback has been successfully submitted. We'll review it shortly.",
+    "sendAnother": "Send Another Feedback",
+    "catGeneral": "General",
+    "catSuggestion": "Game Suggestion",
+    "catBug": "Bug Report",
+    "catImprovement": "Improvement"
   },
   "footer": {
     "copyright": "All rights reserved."

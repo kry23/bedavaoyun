@@ -24,6 +24,9 @@ export function Footer() {
             <Link href={getLocalizedPath("leaderboard", locale)} className="hover:text-[hsl(var(--foreground))] transition-colors">
               {t.nav.leaderboard}
             </Link>
+            <Link href={getLocalizedPath("feedback", locale)} className="hover:text-[hsl(var(--foreground))] transition-colors">
+              {t.nav.feedback}
+            </Link>
           </nav>
           <p className="text-xs text-[hsl(var(--muted-foreground))]">
             &copy; {new Date().getFullYear()} {t.common.siteName}. {t.footer.copyright}
