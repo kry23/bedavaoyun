@@ -52,6 +52,22 @@ export default function EnglishRootLayout({
       <head>
         <link rel="manifest" href="/manifest.en.json" />
         <WebsiteJsonLd locale="en" />
+        {process.env.NEXT_PUBLIC_GA_ID_EN && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID_EN}`}
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init-en" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID_EN}');
+              `}
+            </Script>
+          </>
+        )}
         {process.env.NEXT_PUBLIC_ADSENSE_ID && (
           <Script
             async

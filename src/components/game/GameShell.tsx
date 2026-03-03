@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { AdBanner } from "@/components/ads/AdBanner";
 import { useTranslation, useLocale } from "@/i18n/useTranslation";
 import { getLocalizedPath } from "@/i18n/navigation";
+import { getGameTranslation } from "@/i18n/game-translations";
 
 interface GameShellProps {
   game: GameInfo;
@@ -18,6 +19,7 @@ interface GameShellProps {
 export function GameShell({ game, children, controls, stats }: GameShellProps) {
   const t = useTranslation();
   const locale = useLocale();
+  const gameT = getGameTranslation(game.slug, locale);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -30,7 +32,7 @@ export function GameShell({ game, children, controls, stats }: GameShellProps) {
           {t.nav.games}
         </Link>
         <h1 className="text-xl font-bold">
-          {game.icon} {game.name}
+          {game.icon} {gameT.name}
         </h1>
         <div className="w-16" />
       </div>
